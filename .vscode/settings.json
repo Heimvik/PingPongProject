@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "io.h": "c",
+        "iom162.h": "c"
+    }
+}
