@@ -5,6 +5,11 @@
         "iom162.h": "c",
         "iom32hvbrevb.h": "c",
         "iom32hvb.h": "c",
-        "delay.h": "c"
+        "delay.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "test.h": "c",
+        "uart.h": "c"
     }
 }
