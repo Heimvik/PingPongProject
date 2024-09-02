@@ -1,17 +1,15 @@
 #include <stdio.h>
+#include "test.h"
+#include  <avr/io.h>
+#include <stdlib.h>
 #include "drivers/uart.h"
-
 
 
 int main(void) {
     UartInit();
     BindStdIOToUart();
+    SramTest();
+    //LatchTest();
 
-
-    while (1)
-    {
-        printf("Hello World\n");
-    }
-    
     return 0;
 }

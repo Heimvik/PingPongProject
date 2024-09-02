@@ -1,5 +1,5 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES :=  $(wildcard **/*.c)
+SOURCE_FILES := main.c test.c drivers/uart.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes
@@ -21,10 +21,9 @@ OBJECT_FILES = $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
 
 .DEFAULT_GOAL := $(BUILD_DIR)/main.hex
 
-BUILD_DIRS := $(sort $(dir $(OBJECT_FILES)))
-$(BUILD_DIRS):
-	mkdir -p $@
-	
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
+
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 

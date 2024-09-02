@@ -10,6 +10,7 @@
         "string": "c",
         "string_view": "c",
         "test.h": "c",
-        "uart.h": "c"
+        "uart.h": "c",
+        "cstdint": "c"
     }
 }
