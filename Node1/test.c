@@ -63,16 +63,11 @@ void SramTest(void)
 
 void AdcTest(){
 
-    volatile char *adc = (char *) 0x1400;
-    volatile char adcData;
+
     AdcInit();
     while(1){
-        adc[0x00] = 0x00;
-        _delay_ms(1000);
-        adcData = adc[0x00];
-        printf("ADC data: %d\n",adcData);
+        AdcRead();
+        _delay_ms(10);
     }
-
-    
 
 }
