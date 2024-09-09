@@ -13,4 +13,4 @@ SFIOR:
 - Clear XMBK to disable bus keeper
 - Set XMM2 and clear XMM1 and XMM0 to enable masking og PC4-PC7
 */
-void initXmem(void);
+void initXmem();

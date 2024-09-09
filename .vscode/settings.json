@@ -11,6 +11,10 @@
         "string_view": "c",
         "test.h": "c",
         "uart.h": "c",
-        "cstdint": "c"
+        "cstdint": "c",
+        "*.tcc": "c",
+        "xmem.h": "c",
+        "adc.h": "c",
+        "stdio.h": "c"
     }
 }

@@ -22,32 +22,9 @@ void UartRxTx()
 }
 
 
-void LatchTest()
-{
-    UartInit();
-    BindStdIOToUart();
-    set_bit(MCUCR, SRE);
-    set_bit(SFIOR,XMM2);
-    volatile uint8_t *address = (volatile uint8_t *)0x1000; // Create a pointer to the memory address
-    volatile uint8_t *address2 = (volatile uint8_t *)0x1F05;
-    while (1)
-    {
-        printf("Address: %p\n", address);
-        *address = 0xFF; // Set the value at the memory address to 0xFF
-        _delay_ms(3000);
-        printf("Address: %p\n", address2);
-        *address2 = 0xFF; // Set the value at the memory address to 0x00
-        _delay_ms(2000);
-    }
-
-
-}
-
-
 void SramTest(void)
     {
-        set_bit(MCUCR, SRE);
-        //set_bit(SFIOR,XMM2);
+
 		volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
         uint16_t ext_ram_size = 0x800;
         uint16_t write_errors = 0;
@@ -65,7 +42,7 @@ void SramTest(void)
             if (retreived_value != some_value) {
                 printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n", i, retreived_value, some_value);
                 write_errors++;
-            }
+            } 
         }
         // Retrieval phase: Check that no values were changed during or after the write phase
         srand(seed);
@@ -84,3 +61,18 @@ void SramTest(void)
 
 
 
+void AdcTest(){
+
+    volatile char *adc = (char *) 0x1400;
+    volatile char adcData;
+    AdcInit();
+    while(1){
+        adc[0x00] = 0x00;
+        _delay_ms(1000);
+        adcData = adc[0x00];
+        printf("ADC data: %d\n",adcData);
+    }
+
+    
+
+}

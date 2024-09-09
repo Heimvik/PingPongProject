@@ -2,12 +2,13 @@
 #include "drivers/uart.h"
 #include <avr/io.h>
 #include <util/delay.h>
-
+#include "drivers/adc.h"
 
 void UartTx();
 
 void UartRxTx();
 
-void LatchTest();
 
-void SramTest(void);
+void SramTest();
+
+void AdcTest();
