@@ -2,6 +2,6 @@
 #include "drivers/uart.h"
 
 
-void UartTx();
+void TestUartTx();
 
-void UartRxTx();
+void TestUartRxTx();

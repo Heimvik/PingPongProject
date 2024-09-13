@@ -1,6 +1,6 @@
 #include "test.h"
 
-void UartTx()
+void TestUartTx()
 {
     UartInit();
     char* testStr = "Hello";
@@ -11,7 +11,7 @@ void UartTx()
     }
 }
 
-void UartRxTx()
+void TestUartRxTx()
 {
     UartInit();
     char data;
