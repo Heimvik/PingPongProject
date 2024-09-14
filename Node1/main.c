@@ -10,8 +10,7 @@ int main(void) {
     UartInit();
     BindStdIOToUart();
     initXmem();
-    AdcTest();
-    //LatchTest();
+    AdcTest();    
 
     return 0;
 }

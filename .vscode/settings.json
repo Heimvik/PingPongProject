@@ -15,6 +15,7 @@
         "*.tcc": "c",
         "xmem.h": "c",
         "adc.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdlib.h": "c"
     }
 }

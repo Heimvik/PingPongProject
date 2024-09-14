@@ -1,3 +1,6 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+//header guards used instead of #pragma once to avoid compiler warnings
 #define F_CPU 4915200
 #define BAUDRATE 9600
 #define check_bit(reg, bit) (reg & (1 << (bit)))
@@ -17,3 +20,4 @@
             reg |= (1 << (bits[i]));\
         } \
     } while (0)
+#endif // DEFINES_H
