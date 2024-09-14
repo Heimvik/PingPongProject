@@ -6,7 +6,7 @@ https://learn-eu-central-1-prod-fleet01-xythos.content.blackboardcdn.com/5def77a
 */
 
 
-void UartInit( )
+void InitUart( )
 {   
     unsigned int ubrr = F_CPU/16/BAUDRATE-1;
     UBRR0H = (unsigned char)((ubrr & 0xFF00)>>8);
@@ -19,33 +19,33 @@ void UartInit( )
 
 
 
-void UartTransmit(unsigned char data )
+void TransmitUart(unsigned char data )
 {
     while (!check_bit(UCSR0A,UDRE0)){}
     UDR0 = data;
 }
 
 
-unsigned char UartReceive()
+unsigned char ReceiveUart()
 {
     while ( !check_bit(UCSR0A,RXC0)) {}
     return UDR0;
 }
 
-int UartPutchar(char c, FILE *stream) {
+int PutCharUart(char c, FILE *stream) {
     if (c == '\n') {
-        UartTransmit('\r'); // Transmit carriage return before newline
+        TransmitUart('\r'); // Transmit carriage return before newline
     }
-    UartTransmit(c);
+    TransmitUart(c);
     return 0;
 }
 
 // Wrapper function to receive a single character
-int UartGetchar(FILE *stream) {
-    return UartReceive();
+int GetcharUart(FILE *stream) {
+    return ReceiveUart();
 }
 
 void BindStdIOToUart()
 {
-    fdevopen(UartPutchar, UartGetchar);
+    fdevopen(PutCharUart, GetcharUart);
 }

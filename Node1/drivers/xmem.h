@@ -2,4 +2,4 @@
 #include <avr/io.h>
 #include "../defines.h"
 
-void initXmem();
+void InitXmem();

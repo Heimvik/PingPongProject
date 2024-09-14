@@ -4,11 +4,11 @@
 #include <stdio.h>
 
 
-void InitUART();
+void InitUart();
 
 void BindStdIOToUart();
 
-void UartTransmit(unsigned char data);
+void TransmitUart(unsigned char data);
 
-unsigned char UartReceive( );
+unsigned char ReceiveUart();
 

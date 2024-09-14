@@ -2,22 +2,22 @@
 
 void TestUartTx()
 {
-    UartInit();
+    InitUart();
     char* testStr = "Hello";
     while (1){
         for(int i=0;i<5;i++){
-            UartTransmit(testStr[i]);
+            TransmitUart(testStr[i]);
         }
     }
 }
 
 void TestUartRxTx()
 {
-    UartInit();
+    InitUart();
     char data;
     while(1){
-        data = UartReceive();
-        UartTransmit(data+1);
+        data = ReceiveUart();
+        TransmitUart(data+1);
     }
 }
 
@@ -61,12 +61,10 @@ void TestSram(void)
 
 
 
-void AdcTest(){
-
-
-    AdcInit();
+void TestADC(){
+    InitADC();
     while(1){
-        AdcRead();
+        ReadADC();
         _delay_ms(10);
     }
 

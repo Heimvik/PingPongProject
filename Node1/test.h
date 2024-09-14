@@ -11,4 +11,4 @@ void TestUartRxTx();
 
 void TestSram();
 
-void TestAdc();
+void TestADC();

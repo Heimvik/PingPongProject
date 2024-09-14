@@ -17,7 +17,7 @@ struct slideOfJoy_t
     joyDirection_t joyDirection;
 };
 
-void AdcInit(void);
+void InitADC(void);
 
 
-struct slideOfJoy_t AdcRead();
+struct slideOfJoy_t ReadADC();
