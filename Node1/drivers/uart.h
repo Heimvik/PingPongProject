@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-void UartInit();
+void InitUART();
 
 void BindStdIOToUart();
 

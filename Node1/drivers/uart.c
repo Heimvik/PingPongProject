@@ -8,32 +8,27 @@ https://learn-eu-central-1-prod-fleet01-xythos.content.blackboardcdn.com/5def77a
 
 void UartInit( )
 {   
-
     unsigned int ubrr = F_CPU/16/BAUDRATE-1;
     UBRR0H = (unsigned char)((ubrr & 0xFF00)>>8);
     UBRR0L = (unsigned char)(ubrr & 0xFF);
-    // Enable transmitter, receiver and receiver interrupt
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+
+    set_bit(UCSR0B,RXEN0,TXEN0);
     // Set frame format: 8 data bits, 2 stop bit
-    UCSR0C = (1<<URSEL0)|(1<<USBS0)|(3<<UCSZ00);                                                                                                                                                        
+    set_bit(UCSR0C,URSEL0,USBS0,UCSZ00,UCSZ01);
 }
 
 
 
 void UartTransmit(unsigned char data )
 {
-    /* Wait for empty transmit buffer */
-    while ( !( UCSR0A & (1<<UDRE0)) ) {}
-    /* Put data into buffer, sends the data */
+    while (!check_bit(UCSR0A,UDRE0)){}
     UDR0 = data;
 }
 
 
 unsigned char UartReceive()
 {
-/* Wait for data to be received */
-    while ( !(UCSR0A & (1<<RXC0)) ) {}
-    /* Get and return received data from buffer */
+    while ( !check_bit(UCSR0A,RXC0)) {}
     return UDR0;
 }
 
@@ -52,6 +47,5 @@ int UartGetchar(FILE *stream) {
 
 void BindStdIOToUart()
 {
-    // Bind standard input/output to UART
     fdevopen(UartPutchar, UartGetchar);
 }

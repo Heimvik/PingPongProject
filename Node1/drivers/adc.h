@@ -3,8 +3,7 @@
 #include "../defines.h"
 
 
-void AdcInit(void);
 
+void InitADC();
 
-
-void AdcRead();
+void ReadADC();

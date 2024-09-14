@@ -1,6 +1,6 @@
 #include "test.h"
 
-void UartTx()
+void TestUartTx()
 {
     UartInit();
     char* testStr = "Hello";
@@ -11,7 +11,7 @@ void UartTx()
     }
 }
 
-void UartRxTx()
+void TestUartRxTx()
 {
     UartInit();
     char data;
@@ -22,7 +22,7 @@ void UartRxTx()
 }
 
 
-void SramTest(void)
+void TestSram(void)
     {
 
 		volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
@@ -61,7 +61,7 @@ void SramTest(void)
 
 
 
-void AdcTest(){
+void TestAdc(){
 
     volatile char *adc = (char *) 0x1400;
     volatile char adcData;
@@ -72,7 +72,4 @@ void AdcTest(){
         adcData = adc[0x00];
         printf("ADC data: %d\n",adcData);
     }
-
-    
-
 }

@@ -3,7 +3,7 @@
 volatile char *adc = (char *) 0x1400;
 volatile char adcData;
 
-void AdcInit(){
+void InitADC(){
     //enable pmw clock
     //set data direction register, port D pin 5 to output
     set_bit(DDRD,PD5);
@@ -13,8 +13,8 @@ void AdcInit(){
 
 }
 
-
-void AdcRead(){
+//Giving out a struct of positions
+void ReadADC(){
 
     
 }   

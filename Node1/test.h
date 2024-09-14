@@ -4,11 +4,11 @@
 #include <util/delay.h>
 #include "drivers/adc.h"
 
-void UartTx();
+void TestUartTx();
 
-void UartRxTx();
+void TestUartRxTx();
 
 
-void SramTest();
+void TestSram();
 
-void AdcTest();
+void TestAdc();
