@@ -7,10 +7,10 @@
 
 
 int main(void) {
-    UartInit();
+    InitUart();
     BindStdIOToUart();
-    initXmem();
-    AdcTest();    
+    InitXmem();
+    TestADC();    
 
     return 0;
 }

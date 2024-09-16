@@ -9,7 +9,7 @@ struct slideOfJoy_t slideOfJoy;
 
 
 
-void AdcInit(){
+void InitADC(){
     //enable pmw clock
     //set data direction register, port D pin 5 to output
     set_bit(DDRD, PD5);
@@ -27,7 +27,7 @@ void AdcInit(){
 }
 
 
-struct slideOfJoy_t AdcRead(){
+struct slideOfJoy_t ReadADC(){
     adc[0] = 0;
     _delay_us(100); // theoretically could be 15 or so
     yJoy = (adc[0]-yOffset);
