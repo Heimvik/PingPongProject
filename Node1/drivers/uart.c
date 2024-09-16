@@ -15,7 +15,6 @@ void InitUart( )
     set_bit(UCSR0B, RXEN0, TXEN0);
     // Set frame format: 8 data bits, 2 stop bit
     set_bit(UCSR0B,URSEL0,USBS0,UCSZ00,UCSZ01); 
-    printf("UART initialized\n");                                                                                                                                 
 }
 
 

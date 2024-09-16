@@ -16,6 +16,8 @@
         "xmem.h": "c",
         "adc.h": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "defines.h": "c",
+        "fonts.h": "c"
     }
 }
