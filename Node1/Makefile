@@ -1,5 +1,5 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES :=  $(wildcard **/*.c)
+SOURCE_FILES := $(wildcard **/*.c *.c)
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes
@@ -21,10 +21,11 @@ OBJECT_FILES = $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
 
 .DEFAULT_GOAL := $(BUILD_DIR)/main.hex
 
-BUILD_DIRS := $(sort $(dir $(OBJECT_FILES)))
-$(BUILD_DIRS):
-	mkdir -p $@
-	
+SOURCE_DIRS := $(sort $(dir $(SOURCE_FILES)))
+$(BUILD_DIR):
+	$(foreach dir,$(SOURCE_DIRS),mkdir -p $(BUILD_DIR)/$(dir);)
+
+
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 

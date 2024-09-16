@@ -1,17 +1,16 @@
 #include <stdio.h>
+#include "test.h"
+#include  <avr/io.h>
+#include <stdlib.h>
 #include "drivers/uart.h"
-
+#include "drivers/xmem.h"
 
 
 int main(void) {
-    UartInit();
+    InitUart();
     BindStdIOToUart();
+    InitXmem();
+    TestADC();    
 
-
-    while (1)
-    {
-        printf("Hello World\n");
-    }
-    
     return 0;
 }
