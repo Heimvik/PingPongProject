@@ -35,8 +35,9 @@ void menuSelect() {
     while (1) {
         joyDirection_t dir = ReadADC().joyDirection;
         uint8_t sliderLeft = ReadADC().sliderLeft;
-        printf("Slider left: %d\n", sliderLeft);
-        
+        if (sliderLeft > 200) {
+            printf("Selected item: %s\n", mainMenu.items[menuIndex].text);
+        }
         if (dir == lastDirection) {
             debounceCounter++;
         } else {
