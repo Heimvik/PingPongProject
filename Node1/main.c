@@ -13,6 +13,7 @@ int main(void)
     BindStdIOToUart();
     InitXmem();
 
+    TestSram();
     TestOled();
 
     return 0;

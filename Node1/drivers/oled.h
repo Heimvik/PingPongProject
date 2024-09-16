@@ -1,9 +1,10 @@
 #pragma once
 #include <stdint.h>
-#include "fonts.h"
+//#include "fonts.h"
 #include "../defines.h"
 #include <string.h>
 #include <stdio.h>
+#include <avr/pgmspace.h>
 
 #define OLED_COMMAND_ADDR 0x1000
 #define OLED_DATA_ADDR 0x1200

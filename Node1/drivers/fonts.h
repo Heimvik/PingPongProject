@@ -10,6 +10,6 @@
 #include <avr/pgmspace.h>
 
 // Font 5x7 - normal
-extern const unsigned char PROGMEM font5[95][5];
+
 
 #endif /* FONTS_H_ */
