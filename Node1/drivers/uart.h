@@ -11,4 +11,3 @@ void BindStdIOToUart();
 void TransmitUart(unsigned char data);
 
 unsigned char ReceiveUart();
-
