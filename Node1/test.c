@@ -59,8 +59,6 @@ void TestSram(void)
 }
 
 
-
-
 void TestADC(){
     InitADC();
     while(1){
@@ -68,4 +66,38 @@ void TestADC(){
         _delay_ms(10);
     }
 
+}
+
+
+void TestOled()
+{
+    // Init
+    OledInit();
+    OledReset();
+    OledWriteOutFb();
+
+    // Test all pixels
+    for (int i = 0; i < 64; ++i) {
+        for (int j = 0; j < 128; ++j) {
+            OledSetPixel(i, j);
+            OledWriteOutFb();
+            _delay_ms(1);
+        }
+    }
+
+    // Reset
+    _delay_ms(1000);
+    OledReset();
+    OledWriteOutFb();
+
+    // Test text
+    OledPrintLn(0, "00000000000000000000");
+    OledPrintLn(1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    OledPrintLn(2, " 2 HEIEIEIGEGIREGE");
+    OledPrintLn(3, "3 Test av linja");
+    OledWriteOutFb();
+    _delay_ms(5000);
+    OledPrintLn(5, "ASDEEFFVSW");
+    OledPrintLn(2, "Ny linje 2!");
+    OledWriteOutFb();
 }

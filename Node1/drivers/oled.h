@@ -1,27 +1,22 @@
-#ifndef oled
-#define oled
-
+#pragma once
 #include <stdint.h>
-#include "defines.h"
-
+#include "fonts.h"
+#include "../defines.h"
+#include <string.h>
+#include <stdio.h>
 
 #define OLED_COMMAND_ADDR 0x1000
 #define OLED_DATA_ADDR 0x1200
 
 
+void OledInit();
 
+void OledReset();
 
-#endif
-#ifndef oled
-#define oled
+void OledClearPixel(uint8_t row, uint8_t column);
 
-#include <stdint.h>
+void OledSetPixel(uint8_t row, uint8_t column);
 
+void OledWriteOutFb();
 
-#define OLED_COMMAND_ADDR 0x1000
-#define OLED_DATA_ADDR 0x1200
-
-
-
-
-#endif
+void OledPrintLn(uint8_t line, char* input);
