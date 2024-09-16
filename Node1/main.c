@@ -6,11 +6,15 @@
 #include "drivers/xmem.h"
 
 
-int main(void) {
+
+int main(void) 
+{
     InitUart();
     BindStdIOToUart();
     InitXmem();
-    TestADC();    
+
+    TestSram();
+    TestOled();
 
     return 0;
 }
