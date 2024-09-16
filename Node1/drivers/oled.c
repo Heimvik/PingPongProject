@@ -184,7 +184,8 @@ void OledPrintLn(uint8_t line, char* input)
         else
         {
             printf("Char: %c, font: %d\n", input[charIndex]-32, input[charIndex]);
-            for (uint8_t j = 0; j < 5; ++j) {
+            for (uint8_t j = 0; j < 5; ++j)
+	    {
                 fbPtr[128*line + i] = pgm_read_word(&font5[input[charIndex] - 32][j]);
                 ++i;
             }
