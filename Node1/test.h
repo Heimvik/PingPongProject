@@ -4,6 +4,7 @@
 #include <util/delay.h>
 #include "drivers/adc.h"
 #include "drivers/oled.h"
+#include "oledMenu.h"
 
 
 void TestUartTx();
@@ -15,3 +16,5 @@ void TestSram();
 void TestADC();
 
 void TestOled();
+
+void TestMenu();

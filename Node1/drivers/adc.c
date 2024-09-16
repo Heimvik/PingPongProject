@@ -62,12 +62,11 @@ struct slideOfJoy_t ReadADC(){
             slideOfJoy.joyDirection = NEUTRAL;
         }
         else if (yJoy > 0) {
-            slideOfJoy.joyDirection = UP;
-        } else {
             slideOfJoy.joyDirection = DOWN;
+        } else {
+            slideOfJoy.joyDirection = UP;
         }
     }
-    printf("Joystick y,x; slider 1, 2: %3d %3d %3d %3d\n",slideOfJoy.yJoy, slideOfJoy.xJoy, slideOfJoy.sliderLeft, slideOfJoy.sliderRight, slideOfJoy.joyDirection);
     return slideOfJoy;
 }
 

@@ -12,9 +12,7 @@ int main(void)
     InitUart();
     BindStdIOToUart();
     InitXmem();
-
-    TestSram();
-    TestOled();
-
+    InitADC();
+    TestMenu();
     return 0;
 }

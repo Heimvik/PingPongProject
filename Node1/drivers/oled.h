@@ -21,3 +21,6 @@ void OledSetPixel(uint8_t row, uint8_t column);
 void OledWriteOutFb();
 
 void OledPrintLn(uint8_t line, char* input);
+
+void OledPrintLnInverted(uint8_t line, char* input);
+

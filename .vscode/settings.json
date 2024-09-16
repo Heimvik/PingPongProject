@@ -18,6 +18,7 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "defines.h": "c",
-        "fonts.h": "c"
+        "fonts.h": "c",
+        "oledmenu.h": "c"
     }
 }

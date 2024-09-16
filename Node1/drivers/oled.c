@@ -4,6 +4,10 @@ volatile uint8_t* fbPtr = (volatile uint8_t*)SRAM_ADDR; // 1024 bytes for this
 volatile uint8_t* oledCommandPtr = (volatile uint8_t*)OLED_COMMAND_ADDR;
 volatile uint8_t* oledDataPtr = (volatile uint8_t*)OLED_DATA_ADDR;
 
+
+void OledLineFb(uint8_t line, char* input, uint8_t inverted);
+
+
 const unsigned char PROGMEM font5[95][5] = {
 	{0b00000000,0b00000000,0b00000000,0b00000000,0b00000000}, //
 	{0b00000000,0b00000000,0b01011111,0b00000000,0b00000000}, // !
@@ -170,8 +174,19 @@ uint8_t tmp[5] = {
     0b00111110
 };
 
+
+
 void OledPrintLn(uint8_t line, char* input)
 {
+    OledLineFb(line, input, 0);
+}
+
+void OledPrintLnInverted(uint8_t line, char* input)
+{
+    OledLineFb(line, input, 1);
+}
+
+void OledLineFb (uint8_t line, char* input, uint8_t inverted){
     uint8_t endOfString = 0;
     uint8_t charIndex = 0;
     for (uint8_t i = 0; i < 128; ++i)
@@ -183,18 +198,16 @@ void OledPrintLn(uint8_t line, char* input)
         }
         else
         {
-            for (uint8_t j = 0; j < 5; ++j)
-	    {
+            for (uint8_t j = 0; j < 5; ++j) {
+                if (inverted) {
+                    fbPtr[128*line + i] = ~pgm_read_word(&font5[input[charIndex] - 32][j]);
+                } else {
                 fbPtr[128*line + i] = pgm_read_word(&font5[input[charIndex] - 32][j]);
+                }
                 ++i;
             }
             ++charIndex;
         }
     }
-}
 
-/*//
-void OledPrintLnTmp(uint8_t, char* input){
-    
 }
-//*/

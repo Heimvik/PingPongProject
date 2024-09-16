@@ -75,6 +75,8 @@ void TestADC()
 }
 
 
+
+
 void TestOled()
 {
     // Init
@@ -108,4 +110,12 @@ void TestOled()
     OledPrintLn(5, "ASDEEFFVSW");
     OledPrintLn(2, "Ny linje 2!");
     OledWriteOutFb();
+}
+
+
+void TestMenu(){
+    OledInit();
+    OledReset();
+    OledWriteOutFb();
+    menuSelect();
 }
