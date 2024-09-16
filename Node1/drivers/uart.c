@@ -11,10 +11,10 @@ void InitUart( )
     unsigned int ubrr = F_CPU/16/BAUDRATE-1;
     UBRR0H = (unsigned char)((ubrr & 0xFF00)>>8);
     UBRR0L = (unsigned char)(ubrr & 0xFF);
-
-    set_bit(UCSR0B,RXEN0,TXEN0);
+    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+    set_bit(UCSR0B, RXEN0, TXEN0);
     // Set frame format: 8 data bits, 2 stop bit
-    set_bit(UCSR0C,URSEL0,USBS0,UCSZ00,UCSZ01);
+    set_bit(UCSR0B,URSEL0,USBS0,UCSZ00,UCSZ01);                                                                                                                                  
 }
 
 
