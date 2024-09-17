@@ -1,0 +1,18 @@
+    //Recursive algorithm for initializing any number of subpages:
+
+    //Find menu page name from the id
+
+    //Find number of subpages
+    //Init this page with name and overpage pointing to the overpage parameter
+    
+    //If overpage != NULL
+        //Enter overpage
+        //Init a MenuItem with this page you just inited and name 
+        //Add this item to the list and increment the numItems of the overpage
+        //Exit overpage
+
+    //Iterate over all subpages
+        //If any underpages:
+            //Call this function again, with this page as overpage parameter, without assigning to anything
+        //If not any subpages:
+            //return this page (this will eventually return the pointer to the main menu page)

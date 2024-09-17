@@ -9,24 +9,66 @@ char* copyString(const char* str) {
     return copy;
 }
 
-
-void initMenuPage(MenuPage_t* pages, size_t pageCount){
-    for( size_t i = 0; i<pageCount;i++){
-
-        //Init to what we defined in menuPages
-        pages[i].name = copyString(menuPages[i].name);
-        pages[i].numItems = menuPages[i].numItems;
-        pages[i].items = (MenuItem_t*)malloc(sizeof(MenuItem_t) * pages[i].numItems);
-
-        for (size_t j = 0; j < pages[i].numItems; j++) {
-            pages[i].items[j].text = copyString(menuPages[i].items[j]);
-            pages[i].items[j].page = NULL;
+uint16_t findId(const char* str) {
+    char* underscorePos = strchr(str, '_');
+    if (underscorePos == NULL) {
+        printf("Invalid page or item id in string: %s",str);
+    }
+    underscorePos++;
+    uint16_t number = 0;
+    while (*underscorePos != '\0') {
+        if (*underscorePos >= '0' && *underscorePos <= '9') {
+            number = number * 10 + (*underscorePos - '0');
         }
+        underscorePos++;
+    }
+    return number;
+}
 
-        if (menuPages[i].overPage != NULL) {
-            for (size_t k = 0; k < pageCount; k++) {
-                if (strcmp(menuPages[i].overPage, pages[k].name) == 0) {
-                    pages[i].overPage = &pages[k];
+//Init the page and its items non-relational
+Page_t* initPage(PageInfo_t pageInfo) {
+    Page_t* page = (Page_t*)malloc(sizeof(Page_t));
+    PageItem_t* pageItems = (PageItem_t*)malloc(sizeof(PageItem_t) * pageInfo.numItems);
+
+    page->name = pageInfo.name;
+    page->numItems = pageInfo.numItems;
+    page->items = pageItems;
+    page->overPage = NULL;
+
+    for(uint8_t i =0;i<page->numItems;i++){
+        page->items[i].text = (char*)malloc(sizeof(char)*strlen(pageInfo.items[i]));
+        strcpy(page->items[i].text,pageInfo.items[i]);
+        page->items[i].page = NULL;
+    }
+
+    return &page;
+}
+
+//Takes in a arbitrary page ptr, finds the top page, and:
+// - Relates all underpages to the overpage
+// - Relates all items in a overpage with its menupage
+Page_t** relatePages(Page_t** pages, uint8_t numPages){
+    //Find the top page
+    Page_t topPage;
+    for(uint8_t i = 0;i<numPages;i++){
+        if (pages[i]->overPage == NULL){
+            topPage = *pages[i];
+            break;
+        }
+    }
+
+    for(size_t i = 0; i<numPages;i++){
+        for(size_t j=0; j<pages[i]->numItems;j++){
+            for(size_t k=0; k<numPages;k++){
+                if(k == i){
+                    //A page is assumed to not contain a item to itself
+                    continue;
+                }
+                uint16_t itemId = findId(pages[i]->items[j].text);
+                uint16_t pageId = findId(pages[k]->name);
+                if(itemId == pageId){
+                    pages[k]->overPage = pages[i];
+                    pages[i]->items[j].page = pages[k];
                     break;
                 }
             }
@@ -34,63 +76,39 @@ void initMenuPage(MenuPage_t* pages, size_t pageCount){
     }
 }
 
-void initMenuItems(MenuPage_t* pages, size_t pageCount, MenuItem_t* items, size_t itemCount) {
-    for(size_t i = 0; i<pageCount;i++){
-        for(size_t j=0; j<itemCount;j++){
-            for(size_t k=0; k<pageCount;k++){
-                if(strcmp(pages[i].items[j].text,pages[k].name)==0){
-                    pages[i].items[j].page = &pages[k];
-                } else {
-                    continue;
-                }
-            }
-        }
-    }
-}
-
-void freeMenuPages(MenuPage_t* pages, size_t pageCount) {
-    for (size_t i = 0; i < pageCount; i++) {
-        free(pages[i].name);
-        for (size_t j = 0; j < pages[i].numItems; j++) {
-            free(pages[i].items[j].text);
-        }
-        free(pages[i].items);
-    }
-}
-
-void freeMenuItems(MenuItem_t* items, size_t itemCount) {
-    for (size_t i = 0; i < itemCount; i++) {
-        free(items[i].text);
-    }
-}
 Menu_t initMenu(){
-    size_t pageCount = sizeof(menuPages) / sizeof(menuPages[0]);
-    size_t itemCount = sizeof(menuItems) / sizeof(menuItems[0]);
+    /*
+        Definition of the page content, the initialization favors the following strucutre:
 
-    MenuPage_t* pages = (MenuPage_t*)malloc(sizeof(MenuPage_t) * pageCount);
-    MenuItem_t* items = (MenuItem_t*)malloc(sizeof(MenuItem_t) * itemCount);
+        {PAGE-NAME_ID, NUM_ITEMS, {ITEM-NAME_ID, ITEM-NAME_ID, ITEM-NAME_ID, ITEM-NAME_ID}, OVERPAGE-NAME_ID}       
+    
+        The IDs wil be used for setting upp the conections between all pages, to they have to be correct.
+    */
+    PageInfo_t pageInfo[] = {
+        {"PAGE_0",4,{"ITEM_01", "ITEM_02","ITEM_03","ITEM_04"}, NULL},
+        {"PAGE_01",3, {"ITEM_010", "ITEM_011", "ITEM_012"}, "PAGE_0"},
+        {"PAGE_02",3, {"ITEM_020", "ITEM_020", "ITEM_020"}, "PAGE_0"},
+        {"PAGE_03",3, {"ITEM_030", "ITEM_030", "ITEM_030"}, "PAGE_0"},
+        {"PAGE_04",3, {"ITEM_040", "ITEM_040", "ITEM_040"}, "PAGE_0"}    
+    };
 
-    initializeMenuPages(pages, pageCount);
-    initializeMenuItems(items, itemCount, pages, pageCount);
+    Page_t** pages = (Page_t**)malloc(sizeof(Page_t*)*NUM_PAGES);
+    for(int i = 0;i<NUM_PAGES;i++){
+        pages[i] = initPage(pageInfo[i]);
+    }
 
-    Menu_t menu = {pages};
-    return menu;    
+    relatePages(pages,(uint8_t)NUM_PAGES);
+    
+    //Init menu 
+    Menu_t menu = {pages[0]};
+    return menu;
 }
 
-void freeMenu(Menu_t* menu){
-    //Set the menu page to be the top page
-    freeMenuPages(menu.currentpage, pageCount);
-    freeMenuItems(items, itemCount);
-    free(pages);
-    free(items);
-
-}
 
 
 
-/*
 void menuSelect() {
-    MenuItem_t mainMenuItems[] = {
+    PageItem_t mainMenuItems[] = {
         {"Play", NULL},
         {"Settings", NULL},
         {"Highscore", NULL},
@@ -98,7 +116,7 @@ void menuSelect() {
         {"PLZ GODKJENN", NULL}
     };
 
-    MenuPage_t mainMenu = {
+    Page_t mainMenu = {
         "Main menu",
         5,
         mainMenuItems
@@ -136,7 +154,7 @@ void menuSelect() {
 }
 
 
-void menuPrint(MenuPage_t menuPage, uint8_t menuIndex){
+void menuPrint(Page_t menuPage, uint8_t menuIndex){
     for (int i = 0; i < menuPage.numItems; ++i){
         if (i == menuIndex){
             OledPrintLnInverted(i, menuPage.items[i].text);
@@ -148,4 +166,3 @@ void menuPrint(MenuPage_t menuPage, uint8_t menuIndex){
 
     OledWriteOutFb();
 }
-*/

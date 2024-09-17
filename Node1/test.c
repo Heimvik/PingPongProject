@@ -113,7 +113,8 @@ void TestOled()
 }
 
 
-void TestMenu(){
+
+void TestMenuOnOled(){
     OledInit();
     OledReset();
     OledWriteOutFb();
