@@ -9,7 +9,7 @@
 #include <string.h>
 
 #define _LEVELS 2
-#define NUM_PAGES 5
+#define NUM_PAGES 8
 #define NUM_ITEMS 8
 
 
@@ -28,10 +28,10 @@ typedef struct {
 
 const extern PageInfo_t pageInfo[];
 
-//For the actual 
+
+//For the actual menu
 
 uint8_t findNumItems(char* page);
-
 
 typedef struct Page_t Page_t;
 typedef struct PageItem_t PageItem_t;
@@ -55,3 +55,6 @@ typedef struct {
 Page_t* initPage(PageInfo_t pageInfo);
 Page_t** relatePages(Page_t** pages, uint8_t numPages);
 
+Menu_t* initMenu();
+void navigateMenu(Menu_t* menu);
+void freeMenu(Menu_t* menu);
