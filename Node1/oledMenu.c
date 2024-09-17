@@ -192,7 +192,6 @@ void freeMenu(Menu_t* menu) {
             free(currentPage->items[i].text);
         }
         free(currentPage->items);
-        printf("Freed page: %s\n", currentPage->name);
         free(currentPage->name);
 
         if(currentPage->overPage != NULL){
@@ -210,9 +209,7 @@ void freeMenu(Menu_t* menu) {
             free(currentPage);
         }
         pagesFreed++;
-        printf("Freed top page, total pages freed vs. expected: %d | %d \n", pagesFreed, NUM_PAGES);
     }
-    printf("Menu freed\n");
     free(menu);
 }
 
