@@ -19,6 +19,7 @@
         "stdlib.h": "c",
         "defines.h": "c",
         "fonts.h": "c",
-        "oledmenu.h": "c"
+        "oledmenu.h": "c",
+        "spi.h": "c"
     }
 }

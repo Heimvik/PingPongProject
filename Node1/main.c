@@ -14,6 +14,6 @@ int main(void)
     InitXmem();
     InitADC();
     printf("Hello world\n");
-    TestSPI();
+    TestCanController();
     return 0;
 }

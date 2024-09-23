@@ -130,3 +130,9 @@ void TestSPI()
         _delay_ms(1000);
     }
 }
+
+void TestCanController()
+{
+    SPIInit();
+    CanControllerInit();
+}
