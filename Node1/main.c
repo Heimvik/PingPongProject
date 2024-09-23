@@ -13,6 +13,7 @@ int main(void)
     BindStdIOToUart();
     InitXmem();
     InitADC();
-    TestMenu();
+    printf("Hello world\n");
+    TestSPI();
     return 0;
 }

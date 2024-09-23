@@ -119,3 +119,14 @@ void TestMenu(){
     OledWriteOutFb();
     menuSelect();
 }
+
+void TestSPI()
+{
+    SPIInit();
+    while(1)
+    {
+        SPITranceive(0xFF);
+        printf("Test");
+        _delay_ms(1000);
+    }
+}

@@ -5,6 +5,7 @@
 #include "drivers/adc.h"
 #include "drivers/oled.h"
 #include "oledMenu.h"
+#include "drivers/spi.h"
 
 
 void TestUartTx();
@@ -18,3 +19,5 @@ void TestADC();
 void TestOled();
 
 void TestMenu();
+
+void TestSPI();
