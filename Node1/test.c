@@ -1,5 +1,41 @@
 #include "test.h"
 
+
+ISR(SPI_STC_vect)
+{
+    printf("SPI interrupt\n");
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+    printf("Timer interrupt\n");
+}
+ISR(TIMER1_COMPB_vect)
+{
+    printf("Timer interrupt\n");
+}
+ISR(TIMER1_OVF_vect)
+{
+    printf("Timer interrupt\n");
+}
+ISR(TIMER0_COMP_vect)
+{
+    printf("Timer interrupt\n");
+}
+ISR(TIMER0_OVF_vect)
+{
+    printf("Timer interrupt\n");
+}
+ISR(INT0_vect)
+{
+    printf("INT0 interrupt\n");
+}
+ISR(INT1_vect)
+{
+    printf("INT1 interrupt\n");
+}
+
+
 void TestUartTx()
 {
     InitUart();
@@ -126,13 +162,35 @@ void TestSPI()
     while(1)
     {
         SPITranceive(0xFF);
-        printf("Test");
         _delay_ms(1000);
     }
 }
 
-void TestCanController()
+void TestCan()
 {
     SPIInit();
-    CanControllerInit();
+    CanInit();
+    struct canDataFrame_t dataFrame;
+    dataFrame.id = 0x01;
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+        dataFrame.data[i] = 1<<i;
+    }
+    printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
+
+    CanSend(&dataFrame);
+    while(1)
+    {
+        if (yesWeCanFlag)
+        {
+            struct canDataFrame_t dataFrame = CanReceive();
+            printf("Received message with id %x and data: ", dataFrame.id);
+            for (int i = 0; i < 8; ++i)
+            {
+                printf("%x ", dataFrame.data[i]);
+            }
+            printf("\n");
+            return;
+        }
+    }
 }

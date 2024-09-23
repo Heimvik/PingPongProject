@@ -46,7 +46,7 @@ erase:
 	avrdude -p $(TARGET_DEVICE) -c $(PROGRAMMER) -e
 	
 .PHONY: debug
-debug:
+debug:	
 	if pgrep avarice; then pkill avarice; fi
 	avrdude -p $(TARGET_DEVICE) -c $(PROGRAMMER) -U flash:w:$(BUILD_DIR)/main.hex:i
 	x-terminal-emulator -e avarice --edbg --ignore-intr :4242

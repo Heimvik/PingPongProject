@@ -5,10 +5,10 @@ void SPIInit()
 {
 /* Set MOSI and SCK output, all others input */
     set_bit(DDRB, PB5, PB7, PB4);
-    // Why do we need this? we do not know :)
+    // Set ~CS high
     set_bit(PORTB, PB4);
     /* Enable SPI, Master, set clock rate fck/16 */
-    set_bit(SPCR, SPE, MSTR, SPR0, SPIE);
+    set_bit(SPCR, SPE, MSTR, SPR0);
     //enable interrupt
     printf("SPI initialized\n");
 }
@@ -19,9 +19,7 @@ uint8_t SPITranceive(uint8_t cData)
     /* Start transmission */
     SPDR = cData;
     /* Wait for transmission complete */
-    printf("Transmitting %d\n", cData);
     while(!(SPSR & (1<<SPIF)));
-    printf("Transmitted %d\n", cData);
     return SPDR;
 }
 

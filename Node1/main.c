@@ -14,6 +14,7 @@ int main(void)
     InitXmem();
     InitADC();
     printf("Hello world\n");
-    TestCanController();
+    
+    TestCan();
     return 0;
 }

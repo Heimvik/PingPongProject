@@ -7,6 +7,7 @@
 #include "oledMenu.h"
 #include "drivers/spi.h"
 #include "drivers/cancontroller.h"
+#include "drivers/can.h"
 
 
 void TestUartTx();
@@ -23,6 +24,7 @@ void TestMenu();
 
 void TestSPI();
 
-void TestCanController();
+void TestCan();
 
-void CanControlllerSetMode(uint8_t mode);
+
+

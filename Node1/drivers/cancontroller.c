@@ -12,31 +12,23 @@
 
 void CanControllerInit()
 {
-    //CanControllerReset();
-    //set loopback mode
-    //MCP_CANCTRL = MODE_LOOPBACK;
-    /*
-
-    CanControllerWrite(MaskIdentifyer(TXBnSIDH,(uint8_t)CAN_CONTROLLER_IDENTIFIER,1);
-    CanControllerWrite(MaskIdentifyer(TXBnSIDL,(uint8_t)CAN_CONTROLLER_IDENTIFIER,0);
-    CanControllerWrite(TXBnDLC,DLC);
-    CanControllerWrite(TXBnDm,0x8);
-
-    CanControllerBitModify(TXBnSIDH,(uint8_t)CAN_CONTROLLER_IDENTIFIER,(uint8_t)0xF<);
-
-    
-    */
+    CanControllerReset();
     uint8_t val;
     val=CanControllerRead(MCP_CANSTAT);
-    printf("CANCTRL: %x\n", val);    
-    
+    printf("CANCTRL: %x\n", val);
+
+    //Set 8 byte data frame
+    CanControllerWrite(MCP_TXB0DLC, DATA_BYTES);
+    //Turns off mask
+    CanControllerBitModify(MCP_RXB0CTRL,0xF,0b01100000);
+    //CanControllerWrite(MCP_CANINTE,3);
+    CanControllerWrite(MCP_CANINTE, MCP_RX_INT);
+
     CanControlllerSetMode(MODE_LOOPBACK);
     val=CanControllerRead(MCP_CANSTAT);
-    printf("CANCTRL: %x\n", val);  
+    printf("CANCTRL: %x\n", val); 
 
 
-
-    
 
 }
 
@@ -58,10 +50,10 @@ void CanControllerBitModify(uint8_t addr, uint8_t data, uint8_t mask)
 }
 
 
-void CanControllerRTS(uint8_t buffer)
+void CanControllerRTS()
 {
     SPISetSlaveSelect(1);
-    SPITranceive(MCP_RTS_TX0+buffer);
+    SPITranceive(MCP_RTS_TX2);
     SPISetSlaveSelect(0);
 }
 
@@ -83,6 +75,19 @@ void CanControllerWrite(uint8_t addr, uint8_t data)
     SPITranceive(data);
     SPISetSlaveSelect(0);
 }
+
+void CanControllerWriteMultipleBytes(uint8_t addr, uint8_t dataLength, uint8_t* data)
+{
+    SPISetSlaveSelect(1);
+    SPITranceive(MCP_WRITE);
+    SPITranceive(addr);
+    for (uint8_t i = 0; i < dataLength; ++i)
+    {
+        SPITranceive(data[i]);
+    }
+    SPISetSlaveSelect(0);
+}
+
 
 
 uint8_t CanControllerRead(uint8_t addr)

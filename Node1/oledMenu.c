@@ -33,6 +33,7 @@ void menuSelect() {
     joyDirection_t lastDirection = NEUTRAL; // Assuming NEUTRAL is a valid direction
 
     while (1) {
+        
         joyDirection_t dir = ReadADC().joyDirection;
         uint8_t sliderLeft = ReadADC().sliderLeft;
         if (sliderLeft > 200) {

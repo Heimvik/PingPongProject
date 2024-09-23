@@ -20,6 +20,7 @@
         "defines.h": "c",
         "fonts.h": "c",
         "oledmenu.h": "c",
-        "spi.h": "c"
+        "spi.h": "c",
+        "cancontroller.h": "c"
     }
 }
