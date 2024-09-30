@@ -6,7 +6,6 @@
 #include "drivers/xmem.h"
 
 
-
 int main(void) 
 {
     InitUart();

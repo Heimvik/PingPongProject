@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 
-typedef enum{
+typedef enum
+{
     UP,DOWN,LEFT,RIGHT, NEUTRAL
 } joyDirection_t;
 
@@ -18,6 +19,5 @@ struct slideOfJoy_t
 };
 
 void InitADC(void);
-
 
 struct slideOfJoy_t ReadADC();
