@@ -4,12 +4,11 @@ volatile unsigned char *adc = (char *) 0x1400;
 uint8_t xOffset, yOffset;
 int16_t yJoy, xJoy;
 uint8_t sliderLeft, sliderRight;
-
 struct slideOfJoy_t slideOfJoy;
 
 
-
-void InitADC(){
+void InitADC()
+{
     //enable pmw clock
     //set data direction register, port D pin 5 to output
     set_bit(DDRD, PD5);
@@ -27,43 +26,63 @@ void InitADC(){
 }
 
 
-struct slideOfJoy_t ReadADC(){
+struct slideOfJoy_t ReadADC()
+{
     adc[0] = 0;
     _delay_us(100); // theoretically could be 15 or so
+
     yJoy = (adc[0]-yOffset);
-    if (yJoy > 0) {
+    if (yJoy > 0)
+    {
         yJoy = yJoy * 128 / (2 * 128 - yOffset);
-    } else {
+    }
+    else
+    {
         yJoy = yJoy * 128 / (yOffset);  
     }
+
     xJoy = (adc[0]-xOffset);
-    if (xJoy > 0) {
+    if (xJoy > 0)
+    {
         xJoy = xJoy * 128 / (2 * 128 - xOffset);
-    } else {
+    }
+    else
+    {
         xJoy = xJoy * 128 / (xOffset);
     }
+
     slideOfJoy.xJoy = (int8_t)xJoy;
     slideOfJoy.yJoy = (int8_t)yJoy;
     slideOfJoy.sliderLeft = adc[0];
     slideOfJoy.sliderRight = adc[0];
 
     //joystick direction
-    if (abs(xJoy) > abs(yJoy)) {
-        if (abs(xJoy) < 10) {
+    if (abs(xJoy) > abs(yJoy))
+    {
+        if (abs(xJoy) < 10)
+        {
             slideOfJoy.joyDirection = NEUTRAL;
         }
-        else if (xJoy > 0) {
+        else if (xJoy > 0)
+        {
             slideOfJoy.joyDirection = RIGHT;
-        } else {
+        }
+        else
+        {
             slideOfJoy.joyDirection = LEFT;
         }
-    } else {
-        if (abs(yJoy) < 10) {
+    }
+    else
+    {
+        if (abs(yJoy) < 10)
+        {
             slideOfJoy.joyDirection = NEUTRAL;
         }
-        else if (yJoy > 0) {
+        else if (yJoy > 0)
+        {
             slideOfJoy.joyDirection = UP;
-        } else {
+        } else
+        {
             slideOfJoy.joyDirection = DOWN;
         }
     }
