@@ -10,12 +10,11 @@
 - Set RXB0CTRL RXM[1:0] = 0x3
 */
 
-void CanControllerInit()
+void    CanControllerInit()
 {
     CanControllerReset();
     uint8_t val;
     val=CanControllerRead(MCP_CANSTAT);
-    printf("CANCTRL: %x\n", val);
 
     //Set 8 byte data frame
     CanControllerWrite(MCP_TXB0DLC, DATA_BYTES);
@@ -23,13 +22,7 @@ void CanControllerInit()
     CanControllerBitModify(MCP_RXB0CTRL,0xF,0b01100000);
     //CanControllerWrite(MCP_CANINTE,3);
     CanControllerWrite(MCP_CANINTE, MCP_RX_INT);
-
     CanControlllerSetMode(MODE_LOOPBACK);
-    val=CanControllerRead(MCP_CANSTAT);
-    printf("CANCTRL: %x\n", val); 
-
-
-
 }
 
 
@@ -112,13 +105,3 @@ uint8_t CanControllerReadStatus()
 
 
 
-/*
-Request to send
-Read status
-Bit modify
-
-
-
-
-- Set CANINTF.RXnIE is the bit that is set upon interrupt
-*/
