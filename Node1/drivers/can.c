@@ -1,6 +1,7 @@
 #include "can.h"
 uint8_t yesWeCanFlag = 0;
 
+
 ISR(INT2_vect)
 {
     //NOTE: I hate this name :)
@@ -9,6 +10,7 @@ ISR(INT2_vect)
     yesWeCanFlag = 1;
     sei();
 }
+
 
 void CanInit()
 {
@@ -20,7 +22,6 @@ void CanInit()
     set_bit(SREG, 7);
     clear_bit(EMCUCR, ISC2);
     set_bit(GICR, INT2);
-    
     
    sei();
 }
@@ -41,7 +42,6 @@ void CanSend(struct canDataFrame_t* dataFrame)
 
 struct canDataFrame_t CanReceive()
 {
-
     uint8_t canintf = CanControllerRead(MCP_CANINTF);
     struct canDataFrame_t dataFrame;
     uint8_t receiveBaseAddress;

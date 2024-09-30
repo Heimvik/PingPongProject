@@ -1,16 +1,7 @@
 #include "cancontroller.h"
 
 
-/*
-- Config mode
-- Set TXBnSIDH, TXBnSIDL, TXBnDLC, TXBnDm
-- Set TXBnCTRL.TXREQ
-- Set CANINTF.RXnIE for enabling interrupt
-- 
-- Set RXB0CTRL RXM[1:0] = 0x3
-*/
-
-void    CanControllerInit()
+void CanControllerInit()
 {
     CanControllerReset();
     uint8_t val;
@@ -69,6 +60,7 @@ void CanControllerWrite(uint8_t addr, uint8_t data)
     SPISetSlaveSelect(0);
 }
 
+
 void CanControllerWriteMultipleBytes(uint8_t addr, uint8_t dataLength, uint8_t* data)
 {
     SPISetSlaveSelect(1);
@@ -80,7 +72,6 @@ void CanControllerWriteMultipleBytes(uint8_t addr, uint8_t dataLength, uint8_t* 
     }
     SPISetSlaveSelect(0);
 }
-
 
 
 uint8_t CanControllerRead(uint8_t addr)
@@ -102,6 +93,3 @@ uint8_t CanControllerReadStatus()
     SPISetSlaveSelect(0);
     return status;
 }
-
-
-
