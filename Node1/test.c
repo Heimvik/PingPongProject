@@ -3,36 +3,36 @@
 
 ISR(SPI_STC_vect)
 {
-    printf("WARNING: Unexpected SPI interrupt\n");
+    printf("SPI interrupt\n");
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-    printf("WARNING: Unexpected Timer1 COMPA interrupt\n");
+    printf("Timer interrupt\n");
 }
 ISR(TIMER1_COMPB_vect)
 {
-    printf("WARNING: Unexpected Timer1 COMPB interrupt\n");
+    printf("Timer interrupt\n");
 }
 ISR(TIMER1_OVF_vect)
 {
-    printf("WARNING: Unexpected Timer1 OVF interrupt\n");
+    printf("Timer interrupt\n");
 }
 ISR(TIMER0_COMP_vect)
 {
-    printf("WARNING: Unexpected Timer0 COMP interrupt\n");
+    printf("Timer interrupt\n");
 }
 ISR(TIMER0_OVF_vect)
 {
-    printf("WARNING: Unexpected Timer0 OVF interrupt\n");
+    printf("Timer interrupt\n");
 }
 ISR(INT0_vect)
 {
-    printf("WARNING: Unexpected INT0 interrupt\n");
+    printf("INT0 interrupt\n");
 }
 ISR(INT1_vect)
 {
-    printf("WARNING: Unexpected INT1 interrupt\n");
+    printf("INT1 interrupt\n");
 }
 
 

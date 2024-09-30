@@ -23,7 +23,6 @@ uint8_t SPITranceive(uint8_t cData)
     return SPDR;
 }
 
-
 void SPISetSlaveSelect(uint8_t value) {
     if (value) 
     {

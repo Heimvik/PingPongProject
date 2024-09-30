@@ -1,5 +1,4 @@
 #pragma once
-
 #include "drivers/oled.h"
 #include "drivers/adc.h"
 
@@ -20,7 +19,6 @@ typedef struct {
 } Menu_t;
 
 Menu_t initMenu(char* name,uint8_t numItems);
-
 MenuPage_t initMenuPage(char* name);
 
 void menuSelect();
