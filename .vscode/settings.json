@@ -21,6 +21,7 @@
         "fonts.h": "c",
         "oledmenu.h": "c",
         "spi.h": "c",
-        "cancontroller.h": "c"
+        "cancontroller.h": "c",
+        "sam.h": "c"
     }
 }
