@@ -2,6 +2,9 @@ This document details what CAN ID corresponds to what message, and their data la
 
 ID : 0
     NAME : "Joystick data"
-    DATALENGTH : 2
+    DATALENGTH : 5
     DATA0 : Joystick X position
     DATA1 : Joystick Y position
+    DATA2 : Joystick direction (joyDirection_t enum)
+    DATA3 : Left slider position
+    DATA4 : Right slider position
