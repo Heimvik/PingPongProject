@@ -1,7 +1,7 @@
 #pragma once
 
-#include "drivers/oled.h"
-#include "drivers/adc.h"
+//#include "drivers/oled.h"
+//#include "drivers/adc.h"
 
 #include <stdlib.h>
 #include <stdint.h>
