@@ -1,8 +1,8 @@
 # Configureation of CAN between nodes
 ## MCP2515
 - f_osc = 16 MHz
-- TQ = (2*BRP)/f_osc
-- BRP = 2
+- TQ = 2*(1+BRP)/f_osc
+- BRP = 1
 
 
 
@@ -14,9 +14,9 @@
 
 
 - SYNC = 1
-- PROP = 1
-- PHASE SEG1 = 2
-- PHASE SEG2 = 2
+- PROP = 2  
+- PHASE SEG1 = 4
+- PHASE SEG2 = 4
 - SMP = 0
 - SJW = 1
 
