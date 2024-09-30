@@ -22,6 +22,9 @@
         "oledmenu.h": "c",
         "spi.h": "c",
         "cancontroller.h": "c",
-        "sam.h": "c"
+        "sam.h": "c",
+        "can.h": "c",
+        "sam3x8e.h": "c",
+        "time.h": "c"
     }
 }

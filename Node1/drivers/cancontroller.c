@@ -10,7 +10,7 @@
 - Set RXB0CTRL RXM[1:0] = 0x3
 */
 
-void    CanControllerInit()
+void CanControllerInit()
 {
     CanControllerReset();
     uint8_t val;
@@ -22,7 +22,14 @@ void    CanControllerInit()
     CanControllerBitModify(MCP_RXB0CTRL,0xF,0b01100000);
     //CanControllerWrite(MCP_CANINTE,3);
     CanControllerWrite(MCP_CANINTE, MCP_RX_INT);
-    CanControlllerSetMode(MODE_LOOPBACK);
+    // SJW = 0, BRP = 1
+    CanControllerWrite(MCP_CNF1, 0b00000001);
+    // BTLMODE = 1, SAM = 0, PHSEG1 = 1, PRSEG = 0
+    CanControllerWrite(MCP_CNF2, 0b10001000);
+    // SOF = 0, WAKFIL = 0, PHSEG2 = 1
+    CanControllerWrite(MCP_CNF3, 0b00000001);
+    CanControlllerSetMode(MODE_NORMAL);
+
 }
 
 

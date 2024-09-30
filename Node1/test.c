@@ -180,10 +180,20 @@ void TestCan()
         dataFrame.data[i] = 1<<i;
     }
     printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
-
+    //printf("Waiting to reviece message\n");
     CanSend(&dataFrame);
+    uint8_t cnf1= CanControllerRead(MCP_CNF1);
+    printf("CNF1: %x\n", cnf1);
+    uint8_t cnf2= CanControllerRead(MCP_CNF2);
+    printf("CNF2: %x\n", cnf2);
+    uint8_t cnf3= CanControllerRead(MCP_CNF3);
+    printf("CNF3: %x\n", cnf3);
+    uint8_t mode = CanControllerRead(MCP_CANSTAT);
+    printf("Mode: %x\n", mode);
     while(1)
     {
+        CanSend(&dataFrame);
+        _delay_ms(1000);
         if (yesWeCanFlag)
         {
             struct canDataFrame_t dataFrame = CanReceive();

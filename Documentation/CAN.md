@@ -26,3 +26,8 @@ uint32_t phase1:4;  // Phase 1 segment
 uint32_t sjw:4;     // Synchronization jump width
 uint32_t brp:8;     // Baud rate prescaler
 uint32_t smp:8;     // Sampling mode
+
+
+    //CanInit init = { .brp = 0x14, .phase1 = 0x2, .phase2 = 0x2, .propag = 0x1, .sjw = 0x1, .smp = 0x0 };
+
+    //can_init(init, 0);

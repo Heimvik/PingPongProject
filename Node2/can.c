@@ -1,6 +1,6 @@
 
 #include "sam.h"
-#include "../../../lib/can/can.h"
+#include "can.h"
 #include <stdio.h>
 
 void can_printmsg(CanMsg m){
@@ -21,6 +21,7 @@ void can_printmsg(CanMsg m){
 
 void can_init(CanInit init, uint8_t rxInterrupt){
     // Disable CAN
+    printf("Enabling CAN\n\r");
     CAN0->CAN_MR &= ~CAN_MR_CANEN; 
     
     // Clear status register by reading it
@@ -40,7 +41,7 @@ void can_init(CanInit init, uint8_t rxInterrupt){
     
     // Enable Clock for CAN0 in PMC
     // DIV = 1 (can clk = MCK/2), CMD = 1 (write), PID = 2B (CAN0)
-    PMC->PMC_PCR = PMC_PCR_EN | (0/*??*/ << PMC_PCR_DIV_Pos) | PMC_PCR_CMD | (ID_CAN0 << PMC_PCR_PID_Pos); 
+    PMC->PMC_PCR = PMC_PCR_EN | (0 << PMC_PCR_DIV_Pos) | PMC_PCR_CMD | (ID_CAN0 << PMC_PCR_PID_Pos); 
     PMC->PMC_PCER1 |= 1 << (ID_CAN0 - 32);
     
     //Set baudrate, Phase1, phase2 and propagation delay for can bus. Must match on all nodes!
@@ -111,15 +112,16 @@ uint8_t can_rx(CanMsg* m){
     
 
     
-/*
+
 // Example CAN interrupt handler
 void CAN0_Handler(void){
     char can_sr = CAN0->CAN_SR; 
-    
+    CanMsg m;
     // RX interrupt
     if(can_sr & (1 << rxMailbox)){
         // Add your message-handling code here
-        can_printmsg(can_rx());
+        can_rx(&m);
+        can_printmsg(m);
     } else {
         printf("CAN0 message arrived in non-used mailbox\n\r");
     }
@@ -131,5 +133,4 @@ void CAN0_Handler(void){
     
     NVIC_ClearPendingIRQ(ID_CAN0);
 } 
-*/
 

@@ -12,8 +12,7 @@ int main(void)
     BindStdIOToUart();
     InitXmem();
     InitADC();
-    printf("Hello world\n");
-    
+
     TestCan();
     return 0;
 }
