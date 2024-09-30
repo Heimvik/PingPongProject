@@ -1,6 +1,41 @@
 #include "test.h"
 
 
+ISR(SPI_STC_vect)
+{
+    printf("WARNING: Unexpected SPI interrupt\n");
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+    printf("WARNING: Unexpected Timer1 COMPA interrupt\n");
+}
+ISR(TIMER1_COMPB_vect)
+{
+    printf("WARNING: Unexpected Timer1 COMPB interrupt\n");
+}
+ISR(TIMER1_OVF_vect)
+{
+    printf("WARNING: Unexpected Timer1 OVF interrupt\n");
+}
+ISR(TIMER0_COMP_vect)
+{
+    printf("WARNING: Unexpected Timer0 COMP interrupt\n");
+}
+ISR(TIMER0_OVF_vect)
+{
+    printf("WARNING: Unexpected Timer0 OVF interrupt\n");
+}
+ISR(INT0_vect)
+{
+    printf("WARNING: Unexpected INT0 interrupt\n");
+}
+ISR(INT1_vect)
+{
+    printf("WARNING: Unexpected INT1 interrupt\n");
+}
+
+
 void TestUartTx()
 {
     InitUart();
@@ -79,6 +114,8 @@ void TestADC()
 }
 
 
+
+
 void TestOled()
 {
     // Init
@@ -112,4 +149,51 @@ void TestOled()
     OledPrintLn(5, "ASDEEFFVSW");
     OledPrintLn(2, "Ny linje 2!");
     OledWriteOutFb();
+}
+
+
+void TestMenu(){
+    OledInit();
+    OledReset();
+    OledWriteOutFb();
+    menuSelect();
+}
+
+void TestSPI()
+{
+    SPIInit();
+    while(1)
+    {
+        SPITranceive(0xFF);
+        _delay_ms(1000);
+    }
+}
+
+void TestCan()
+{
+    SPIInit();
+    CanInit();
+    struct canDataFrame_t dataFrame;
+    dataFrame.id = 0x01;
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+        dataFrame.data[i] = 1<<i;
+    }
+    printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
+
+    CanSend(&dataFrame);
+    while(1)
+    {
+        if (yesWeCanFlag)
+        {
+            struct canDataFrame_t dataFrame = CanReceive();
+            printf("Received message with id %x and data: ", dataFrame.id);
+            for (int i = 0; i < 8; ++i)
+            {
+                printf("%x ", dataFrame.data[i]);
+            }
+            printf("\n");
+            return;
+        }
+    }
 }

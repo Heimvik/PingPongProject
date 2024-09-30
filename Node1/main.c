@@ -11,9 +11,9 @@ int main(void)
     InitUart();
     BindStdIOToUart();
     InitXmem();
-
-    TestSram();
-    TestOled();
-
+    InitADC();
+    printf("Hello world\n");
+    
+    TestCan();
     return 0;
 }
