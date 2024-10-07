@@ -8,7 +8,8 @@
 #include "drivers/spi.h"
 #include "drivers/cancontroller.h"
 #include "drivers/can.h"
-
+#include "drivers/adc.h"
+#include "canMessages.h"
 
 
 void TestUartTx();
@@ -27,5 +28,5 @@ void TestSPI();
 
 void TestCan();
 
-
+void TestSendJoystick();
 

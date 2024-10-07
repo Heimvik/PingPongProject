@@ -214,3 +214,16 @@ void TestCan()
         }
     }
 }
+
+void TestSendJoystick()
+{
+    SPIInit();
+    CanInit();
+    struct slideOfJoy_t joystick;
+    
+    while(1)
+    {
+        CANSendJoystick(ReadADC());
+        _delay_ms(50);
+    }
+}
