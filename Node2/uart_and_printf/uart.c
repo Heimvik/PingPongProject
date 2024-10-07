@@ -199,7 +199,7 @@ int _write(int file, char* ptr, int len){
     }
 
     for(int idx = 0; idx < len; idx++){
-        uart_tx((uint8_t)ptr[idx]);
+        uart_putchar((uint8_t)ptr[idx]);
     }
     return len;
 }
@@ -211,7 +211,7 @@ int _read(int file, char* ptr, int len){
     
     int nread = 0;
     for(int idx = 0; idx < len; idx++){
-        int b = uart_rx((uint8_t*)&ptr[idx]);
+        int b = uart_getchar((uint8_t*)&ptr[idx]);
         nread += b;     
         if(!b){
             return nread;

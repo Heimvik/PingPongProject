@@ -8,7 +8,7 @@
 
 int main()
 {
-     SystemInit();
+    SystemInit();
 
     WDT->WDT_MR = WDT_MR_WDDIS; //Disable Watchdog Timer
 
