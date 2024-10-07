@@ -30,7 +30,7 @@ void CanSend(struct canDataFrame_t* dataFrame)
 {
     CanControllerWrite(MCP_TXB2SIDL, (dataFrame->id)<<5);
     CanControllerWrite(MCP_TXB2SIDH, (dataFrame->id)>>3);
-    CanControllerWrite(MCP_TXB0DLC + 16 * 2, dataFrame->length);
+    CanControllerWrite(MCP_TXB2DLC, dataFrame->length);
     // Load data into TX bufferSREG
     CanControllerWriteMultipleBytes(MCP_TXB2D0, 8, dataFrame->data);
     // Ready to Send buff 0

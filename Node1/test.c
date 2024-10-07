@@ -179,21 +179,12 @@ void TestCan()
     {
         dataFrame.data[i] = 1<<i;
     }
+    dataFrame.length = 8;
     printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
 
-    CanSend(&dataFrame);
     while(1)
     {
-        if (yesWeCanFlag)
-        {
-            struct canDataFrame_t dataFrame = CanReceive();
-            printf("Received message with id %x and data: ", dataFrame.id);
-            for (int i = 0; i < 8; ++i)
-            {
-                printf("%x ", dataFrame.data[i]);
-            }
-            printf("\n");
-            return;
-        }
+        CanSend(&dataFrame);
+        _delay_ms(1000);
     }
 }
