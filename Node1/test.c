@@ -180,7 +180,6 @@ void TestCan()
     {
         dataFrame.data[i] = 1<<i;
     }
-    dataFrame.length = 8;
     printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
     printf("Configuration:\n");
     uint8_t cnf1 = CanControllerRead(MCP_CNF1);
@@ -225,6 +224,6 @@ void TestSendJoystick()
     {
         joystick = ReadADC();
         CANSendJoystick(&joystick);
-        _delay_ms(50);
+        _delay_ms(500);
     }
 }
