@@ -1,5 +1,5 @@
 LDSCRIPT = sam/flash.ld
-BOOTUP = sam/sam3x/source/exceptions.c sam/sam3x/source/startup_sam3x.c sam/sam3x/source/system_sam3x.c
+BOOTUP = sam/sam3x/source/exceptions.c sam/sam3x/source/startup_sam3x.c sam/sam3x/source/system_sam3x.c can.c time.c
 MCUTYPE = __SAM3X8E__
 # List all source files to be compiled; separate with space
 SOURCE_FILES=$(BOOTUP) main.c uart_and_printf/uart.c uart_and_printf/printf-stdarg.c

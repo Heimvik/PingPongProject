@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include "uart_and_printf/uart.h"
 #include "uart_and_printf/printf-stdarg.h"
-
+#include "can.h"
 #include "sam.h"
 
 
