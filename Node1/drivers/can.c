@@ -63,6 +63,11 @@ struct canDataFrame_t CanReceive()
         receiveBaseAddress = MCP_RXB1CTRL;
         CanControllerBitModify(MCP_CANINTF, 0x00, 0x02);
     }
+    else
+    {
+        printf("Error: Did not receive any message\n");
+        return;
+    }
     
     dataFrame.id = 0;
     dataFrame.id |= CanControllerRead(receiveBaseAddress + 1)<<3;

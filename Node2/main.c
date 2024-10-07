@@ -14,13 +14,28 @@ int main()
 
     configure_uart();
     printf("Hello World\n\r");
-    CanInit init = { .phase2 = 0x3, .propag = 0x1, .phase1 = 0x3, .sjw = 0x0, .brp = 0x14, .smp = 0x0 };
+    CanInit init = { .phase2 = 0x5, .propag = 0x0, .phase1 = 0x6, .sjw = 0x0, .brp = 41, .smp = 0x0 };
 
-    can_init(init, 1);
+    can_init(init, 0);
     CanMsg m;
     can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
-    printf("Sent message 1 times\n\r");
     
+    printf("Configuration:\n");
+    uint32_t canBr = CAN0->CAN_BR;
+    printf("CAN_BR: %x\n\r", canBr);
+
+    uint32_t canMr = CAN0->CAN_MR;
+    uint32_t canSr = CAN0->CAN_SR;
+    printf("CAN_MR: %x\n\rCAN_SR: %x\n\r", canMr, canSr);
+
+    uint32_t canEcr = CAN0->CAN_ECR;
+    uint32_t canIer = CAN0->CAN_IER;
+    uint32_t canIdt = CAN0->CAN_IDR;
+    printf("CAN_ECR: %x\n\rCAN_IER: %x\n\rCAN_IDR: %x\n\r", canEcr, canIer, canIdt);
+
+    uint32_t error = 0;
+    
+    //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
 
     while (1)
     {
@@ -29,7 +44,12 @@ int main()
             printf("Ohmyfuckinggod\n\r");
             can_printmsg(m);
         }
-        time_spinFor(msecs(200));
+
+        error = CAN0->CAN_ECR;
+
+        canSr = CAN0->CAN_SR;
+        printf("TEC: %2x\t REC: %2x\t SR: %8x\n\r", error>>16, error & 0xFF,canSr);
+
 
         //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
     }

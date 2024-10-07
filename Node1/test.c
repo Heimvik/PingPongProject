@@ -181,10 +181,29 @@ void TestCan()
     }
     dataFrame.length = 8;
     printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
-
+    printf("Configuration:\n");
+    uint8_t cnf1 = CanControllerRead(MCP_CNF1);
+    uint8_t cnf2 = CanControllerRead(MCP_CNF2);
+    uint8_t cnf3 = CanControllerRead(MCP_CNF3);
+    printf("CNF1: %x\nCNF2: %x\nCNF3: %x\n", cnf1, cnf2, cnf3);
+    uint8_t canStat = CanControllerRead(MCP_CANSTAT);
+    uint8_t canDlc = CanControllerRead(MCP_TXB2DLC);
+    uint8_t canB2SIDH = CanControllerRead(MCP_TXB2SIDH);
+    uint8_t canB2SIDL = CanControllerRead(MCP_TXB2SIDL);
+    uint8_t canTxI2E = CanControllerRead(MCP_CANINTE);
+    printf("CANSTAT: %x\nTXB2DLC: %x\nTXB2SIDH: %x\nTXB2SIDL: %x\nCANINTE: %x\n", canStat, canDlc, canB2SIDH, canB2SIDL, canTxI2E);
+    
+    uint16_t count = 0;
     while(1)
     {
-        CanSend(&dataFrame);
-        _delay_ms(1000);
+        count = (count + 1) % 10000;
+        if (!count) {
+            CanSend(&dataFrame);
+        }
+        if (yesWeCanFlag)
+        {
+            struct canDataFrame_t df = CanReceive();
+            printf("Received message with ID %x\n", df.id);
+        }
     }
 }

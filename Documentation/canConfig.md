@@ -31,3 +31,12 @@ uint32_t smp:8;     // Sampling mode
     //CanInit init = { .brp = 0x14, .phase1 = 0x2, .phase2 = 0x2, .propag = 0x1, .sjw = 0x1, .smp = 0x0 };
 
     //can_init(init, 0);
+
+
+# Can config SAM
+- SMP = 1
+- BRP = 21
+- SJW = 1
+- PROPAG = 4
+- PH1 = 2
+- PH2 = 4

@@ -31,3 +31,14 @@ uint32_t smp:8;     // Sampling mode
     //CanInit init = { .brp = 0x14, .phase1 = 0x2, .phase2 = 0x2, .propag = 0x1, .sjw = 0x1, .smp = 0x0 };
 
     //can_init(init, 0);
+
+## Can error flags
+- BERR = Bus mismatch med hva man sender
+- AERR = Ack missing
+- TSTP = Start frame or end frame detected
+- WAKEUP = Not in low power
+
+- BOFF = Bus off TEC greater than 256
+- ERRP = TEC or REC counter greater than 128
+- WARN = TEC or REC exceeds 96
+- ERRA = Too large error counters
