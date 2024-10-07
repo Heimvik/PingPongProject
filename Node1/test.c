@@ -223,7 +223,8 @@ void TestSendJoystick()
     
     while(1)
     {
-        CANSendJoystick(ReadADC());
+        joystick = ReadADC();
+        CANSendJoystick(&joystick);
         _delay_ms(50);
     }
 }
