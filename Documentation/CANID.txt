@@ -1,0 +1,10 @@
+This document details what CAN ID corresponds to what message, and their data layout
+
+ID : 0
+    NAME : "Joystick data"
+    DATALENGTH : 5
+    DATA0 : Joystick X position
+    DATA1 : Joystick Y position
+    DATA2 : Joystick direction (joyDirection_t enum)
+    DATA3 : Left slider position
+    DATA4 : Right slider position

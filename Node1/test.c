@@ -175,11 +175,11 @@ void TestCan()
     CanInit();
     struct canDataFrame_t dataFrame;
     dataFrame.id = 0x01;
+    dataFrame.dataLength = 8;
     for (uint8_t i = 0; i < 8; ++i)
     {
         dataFrame.data[i] = 1<<i;
     }
-    dataFrame.length = 8;
     printf("Sending message with id %x and data: %x %x %x %x %x %x %x %x\n", dataFrame.id, dataFrame.data[0], dataFrame.data[1], dataFrame.data[2], dataFrame.data[3], dataFrame.data[4], dataFrame.data[5], dataFrame.data[6], dataFrame.data[7]);
     printf("Configuration:\n");
     uint8_t cnf1 = CanControllerRead(MCP_CNF1);
@@ -202,8 +202,28 @@ void TestCan()
         }
         if (yesWeCanFlag)
         {
-            struct canDataFrame_t df = CanReceive();
-            printf("Received message with ID %x\n", df.id);
+            struct canDataFrame_t dataFrame = CanReceive();
+            printf("Received message with id %x and data: ", dataFrame.id);
+            for (int i = 0; i < dataFrame.dataLength; ++i)
+            {
+                printf("%x ", dataFrame.data[i]);
+            }
+            printf("\n");
+            return;
         }
+    }
+}
+
+void TestSendJoystick()
+{
+    SPIInit();
+    CanInit();
+    struct slideOfJoy_t joystick;
+    
+    while(1)
+    {
+        joystick = ReadADC();
+        CANSendJoystick(&joystick);
+        _delay_ms(500);
     }
 }

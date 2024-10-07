@@ -14,6 +14,6 @@ int main(void)
     InitADC();
     printf("Hello world\n");
     
-    TestCan();
+    TestSendJoystick();
     return 0;
 }
