@@ -175,6 +175,7 @@ void TestCan()
     CanInit();
     struct canDataFrame_t dataFrame;
     dataFrame.id = 0x01;
+    dataFrame.dataLength = 8;
     for (uint8_t i = 0; i < 8; ++i)
     {
         dataFrame.data[i] = 1<<i;
@@ -202,8 +203,14 @@ void TestCan()
         }
         if (yesWeCanFlag)
         {
-            struct canDataFrame_t df = CanReceive();
-            printf("Received message with ID %x\n", df.id);
+            struct canDataFrame_t dataFrame = CanReceive();
+            printf("Received message with id %x and data: ", dataFrame.id);
+            for (int i = 0; i < dataFrame.dataLength; ++i)
+            {
+                printf("%x ", dataFrame.data[i]);
+            }
+            printf("\n");
+            return;
         }
     }
 }

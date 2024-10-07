@@ -1,0 +1,7 @@
+This document details what CAN ID corresponds to what message, and their data layout
+
+ID : 0
+    NAME : "Joystick data"
+    DATALENGTH : 2
+    DATA0 : Joystick X position
+    DATA1 : Joystick Y position

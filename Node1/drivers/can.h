@@ -8,7 +8,7 @@ extern uint8_t yesWeCanFlag;
 
 struct canDataFrame_t {
     uint8_t id;
-    uint8_t length;
+    uint8_t dataLength; // limited to 0-8
     uint8_t data[8];
 };
 
