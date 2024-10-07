@@ -14,7 +14,7 @@ int main()
 
     configure_uart();
     printf("Hello World\n\r");
-    CanInit init = { .brp = 0x14, .phase1 = 0x4, .phase2 = 0x4, .propag = 0x2, .sjw = 0x1, .smp = 0x0 };
+    CanInit init = { .phase2 = 0x3, .propag = 0x1, .phase1 = 0x3, .sjw = 0x0, .brp = 0x14, .smp = 0x0 };
 
     can_init(init, 1);
     CanMsg m;
