@@ -8,16 +8,29 @@
 
 int main()
 {
-    SystemInit();
+     SystemInit();
 
     WDT->WDT_MR = WDT_MR_WDDIS; //Disable Watchdog Timer
 
     configure_uart();
     printf("Hello World\n\r");
+    CanInit init = { .brp = 0x14, .phase1 = 0x4, .phase2 = 0x4, .propag = 0x2, .sjw = 0x1, .smp = 0x0 };
+
+    can_init(init, 1);
+    CanMsg m;
+    can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
+    printf("Sent message 1 times\n\r");
+    
 
     while (1)
     {
-        /* code */
+        printf("Checking for message\n\r");
+        if (can_rx(&m)){
+            printf("Ohmyfuckinggod\n\r");
+            can_printmsg(m);
+        }
+        time_spinFor(msecs(200));
+
+        //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
     }
-    
 }
