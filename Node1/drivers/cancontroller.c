@@ -10,7 +10,7 @@
 - Set RXB0CTRL RXM[1:0] = 0x3
 */
 
-void    CanControllerInit()
+void CanControllerInit()
 {
     CanControllerReset();
     uint8_t val;
