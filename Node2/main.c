@@ -5,6 +5,7 @@
 #include "can_controller.h"
 #include "time.h"
 #include "sam.h"
+#include "test.h"
 
 
 int main()
@@ -38,6 +39,7 @@ int main()
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
 
+    TestPwm();
     while (1)
     {
         // printf("Checking for message\n\r");
