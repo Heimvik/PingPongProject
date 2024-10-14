@@ -6,6 +6,75 @@
 #include "drivers/time.h"
 #include "sam.h"
 #include "test.h"
+#include "drivers/userInput.h"
+#include "drivers/servo.h"
+
+
+#define DEBUG_INTERRUPT 0
+CAN_MESSAGE message;
+
+/**
+ * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
+ *
+ * \param void
+ *
+ * \retval 
+ */
+void CAN0_Handler( void )
+{
+	if(DEBUG_INTERRUPT)printf("CAN0 interrupt\n\r");
+	char can_sr = CAN0->CAN_SR; 
+	
+	//RX interrupt
+	if(can_sr & (CAN_SR_MB1 | CAN_SR_MB2) )//Only mailbox 1 and 2 specified for receiving
+	{
+		if(can_sr & CAN_SR_MB1)  //Mailbox 1 event
+		{
+			can_receive(&message, 1);
+
+		}
+		else if(can_sr & CAN_SR_MB2) //Mailbox 2 event
+		
+		{
+			can_receive(&message, 2);
+		}
+		else
+		{
+			printf("CAN0 message arrived in non-used mailbox\n\r");
+		}
+
+		if(DEBUG_INTERRUPT)printf("message id: %d\n\r", message.id);
+		if(DEBUG_INTERRUPT)printf("message data length: %d\n\r", message.data_length);
+		for (int i = 0; i < message.data_length; i++)
+		{
+			if(DEBUG_INTERRUPT)printf("%d ", message.data[i]);
+		}
+		if(DEBUG_INTERRUPT)printf("\n\r");
+	}
+	
+	if(can_sr & CAN_SR_MB0)
+	{
+		if(DEBUG_INTERRUPT) printf("CAN0 MB0 ready to send \n\r");
+		
+	//Disable interrupt
+		CAN0->CAN_IDR = CAN_IER_MB0;
+
+	}
+
+	if(can_sr & CAN_SR_ERRP)
+	{
+		if(DEBUG_INTERRUPT)printf("CAN0 ERRP error\n\r");
+
+	}
+	if(can_sr & CAN_SR_TOVF)
+	{
+		if(DEBUG_INTERRUPT)printf("CAN0 timer overflow\n\r");
+
+	}
+	
+	NVIC_ClearPendingIRQ(ID_CAN0);
+	//sei();*/
+}
 
 
 int main()
@@ -17,7 +86,7 @@ int main()
     configure_uart();
     printf("Hello World\n\r");
     //CanInit init = { .phase2 = 0x5, .propag = 0x0, .phase1 = 0x6, .sjw = 0x0, .brp = 41, .smp = 0x0 };
-/*
+
     can_init_def_tx_rx_mb(41 << 16 | 0x6 << 4 | 0x5);
     //CanMsg m;
     //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
@@ -38,23 +107,21 @@ int main()
     uint32_t error = 0;
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
-*/
+    
     TestPwm();
+    struct slideOfJoy_t joyPos;
+
     while (1)
     {
-        // printf("Checking for message\n\r");
-        // if (can_rx(&m)){
-        //     printf("Ohmyfuckinggod\n\r");
-        //     can_printmsg(m);
-        // }
+        //*
+        joyPos.xJoy = 0.3 * joyPos.xJoy + 0.7 * (message.data[0] - 128);
+        joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * message.data[1] - 128;
+        joyPos.sliderLeft = 0.3 * joyPos.sliderLeft + 0.7 * message.data[3];
+        joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
+        printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
+        //*/
 
-        // error = CAN0->CAN_ECR;
-
-        // canSr = CAN0->CAN_SR;
-        // printf("TEC: %2x\t REC: %2x\t SR: %8x\n\r", error>>16, error & 0xFF,canSr);
-
-        time_spinFor(1);
-        //printf("a\r\n");
-        //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
+        //setServoPosFromUint8(joyPos.sliderRight);
+        setServoPosFromInt8(joyPos.xJoy);
     }
 }
