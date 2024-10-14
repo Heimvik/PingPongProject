@@ -1,5 +1,5 @@
 LDSCRIPT = sam/flash.ld
-BOOTUP = sam/sam3x/source/exceptions.c sam/sam3x/source/startup_sam3x.c sam/sam3x/source/system_sam3x.c time.c can_controller.c can_interrupt.c pwm.c test.c
+BOOTUP = sam/sam3x/source/exceptions.c sam/sam3x/source/startup_sam3x.c sam/sam3x/source/system_sam3x.c drivers/time.c drivers/can_controller.c drivers/can_interrupt.c drivers/pwm.c drivers/servo.c test.c
 MCUTYPE = __SAM3X8E__
 # List all source files to be compiled; separate with space
 SOURCE_FILES=$(BOOTUP) main.c uart_and_printf/uart.c uart_and_printf/printf-stdarg.c

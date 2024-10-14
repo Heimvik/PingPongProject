@@ -17,7 +17,7 @@ int main()
     configure_uart();
     printf("Hello World\n\r");
     //CanInit init = { .phase2 = 0x5, .propag = 0x0, .phase1 = 0x6, .sjw = 0x0, .brp = 41, .smp = 0x0 };
-
+/*
     can_init_def_tx_rx_mb(41 << 16 | 0x6 << 4 | 0x5);
     //CanMsg m;
     //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
@@ -38,7 +38,7 @@ int main()
     uint32_t error = 0;
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
-
+*/
     TestPwm();
     while (1)
     {
@@ -54,6 +54,7 @@ int main()
         // printf("TEC: %2x\t REC: %2x\t SR: %8x\n\r", error>>16, error & 0xFF,canSr);
 
         time_spinFor(1);
+        //printf("a\r\n");
         //can_tx((CanMsg){.id = 0x01, .length = 8, .byte8 = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}});
     }
 }
