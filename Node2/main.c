@@ -2,8 +2,8 @@
 #include <stdarg.h>
 #include "uart_and_printf/uart.h"
 #include "uart_and_printf/printf-stdarg.h"
-#include "can_controller.h"
-#include "time.h"
+#include "drivers/can_controller.h"
+#include "drivers/time.h"
 #include "sam.h"
 #include "test.h"
 
