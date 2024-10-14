@@ -4,10 +4,13 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/lib/avr/include"
+                "/usr/lib/avr/include",
+                "${workspaceFolder}/Node2/sam/sam3x/include"
+                
             ],
             "defines": [
-                "__AVR_ATmega162__"
+                "__AVR_ATmega162__",
+                "__SAM3X8E__"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
