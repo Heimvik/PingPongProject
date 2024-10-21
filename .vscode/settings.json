@@ -24,6 +24,7 @@
         "spi.h": "c",
         "cancontroller.h": "c",
         "sam3x8e.h": "c",
-        "encoder.h": "c"
+        "encoder.h": "c",
+        "motor.h": "c"
     }
 }

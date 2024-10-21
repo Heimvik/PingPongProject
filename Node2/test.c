@@ -29,7 +29,7 @@ void TestGoalCounter()
 
 void TestMotorPosition()
 {
-    initEncoder2();
+    initEncoder();
     while(1)
     {
         printf("Position: %d\n\r",readEncoder());
@@ -39,5 +39,17 @@ void TestMotorPosition()
 void TestSolenoid()
 {
     InitSolenoid();
-    ActivateSolenoid();
+    while(1){
+        ActivateSolenoid();
+        time_spinFor(100000000);
+    }
+}
+
+void testPI(){
+    initEncoder();
+    //wantedPosition = 1000;
+    while (1)
+    {
+    }
+    
 }

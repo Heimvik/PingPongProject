@@ -11,6 +11,7 @@
 #include "drivers/pwm.h"
 #include "drivers/adc.h"
 #include "drivers/solenoid.h"
+#include "drivers/motor.h"
 
 
 #define DEBUG_INTERRUPT 0
@@ -122,10 +123,13 @@ int main()
 	//initAdc();
 	//initPwm();
 	//initMotor();
-	TestMotorPosition();
+	//TestSolenoid();
+	initEncoder();
+	//TestMotorPosition();
     while (1)
     {
         //*
+		
         joyPos.xJoy = 0.3 * joyPos.xJoy + 0.7 * (message.data[0] - 128);
         joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * (message.data[1] - 128);
 		joyPos.joyDirection = message.data[2];
@@ -133,11 +137,16 @@ int main()
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
         //printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
         //*/
-		TestSolenoid();
-		time_spinFor(1000000);
+		int32_t wantedPosition = ((int32_t)joyPos.yJoy + 128) * 2833 / 256;
+
+		PIcontroller(wantedPosition, 1);
+		time_spinFor(10000000);
         //setServoPosFromUint8(joyPos.sliderRight);
+		/*
         setServoPosFromInt8(joyPos.yJoy);
 		setMotorDutyCycle((joyPos.joyDirection == 2 | joyPos.joyDirection == 3) ? 50 : 0);
 		setMotorDirection(joyPos.xJoy < 0);
+		*/
+
     }
 }

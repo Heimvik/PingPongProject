@@ -1,6 +1,12 @@
 #include "motor.h"
 
 void initEncoder(){
+    initMotor();
+    setMotorDirection(0);
+    setMotorDutyCycle(30);
+    time_spinFor(seconds(1));
+    setMotorDutyCycle(0);
+    printf("Encoder init\n\r");
     REG_PMC_PCER1 |= PMC_PCER1_PID33 | PMC_PCER1_PID34 | PMC_PCER1_PID35;
 
     // PC25 setup
@@ -27,7 +33,7 @@ void initEncoder(){
     REG_TC2_CMR0 &= ~(TC_CMR_WAVE);
 
     printf("TC2 status: %x\n\r", REG_TC2_SR0);  
-    //2828
+    //initTimerInterrupt();
 
 }
 
@@ -41,7 +47,7 @@ void initMotor(){
     //
     REG_PIOC_OER |= PIO_OER_P23;
     initPwm();
-    initTimerInterrupt();
+    //initTimerInterrupt();
 }
 
 void setMotorDirection(uint8_t dir){
@@ -55,7 +61,6 @@ void setMotorDirection(uint8_t dir){
 
 
 void TC1_Handler(void){
-    __disable_irq();
     while (1)
     {
         printf("Interrupt\n\r");
@@ -64,6 +69,8 @@ void TC1_Handler(void){
 }
 
 void initTimerInterrupt(){
+    __enable_irq();
+
     printf("Init timer interrupt\n\r");
     REG_PMC_PCER0 |= PMC_PCER0_PID30 | PMC_PCER0_PID31;
     REG_PMC_PCER1 |= PMC_PCER1_PID32; 
@@ -80,22 +87,53 @@ void initTimerInterrupt(){
 
     printf("status: %x\n\r", REG_TC1_SR0);
     printf("interrupt status %x\n\r", REG_TC1_IMR0);
-    __enable_irq();
+    while (1)
+    {
+        printf("counter value: %d\n\r", REG_TC1_CV0);
+    }
+    
 
 
 }
 
 
-uint8_t Kp = 1;
-uint8_t Ki = 1;
 
-uint16_t T = 1000;
 
-uint16_t error = 0;
 
-uint8_t wantedPosition = 0;
+int32_t integralerror = 0;
+int32_t wantedPosition = 0;
 
-void PIcontroller(){
+float Kp = 0.02;
+float Ki = 0.002;
 
-    
+float PIcontroller(int32_t wantedPosition, uint8_t T) {
+    uint32_t position = readEncoder();
+    int32_t error = wantedPosition - (int32_t)position;
+
+    integralerror += error;
+    printf("Error: %d\n\r", error);
+    printf("Integral error: %d\n\r", integralerror);
+
+    if (integralerror > 6000) {
+        integralerror = 6000;
+    } else if (integralerror < -6000) {
+        integralerror = -6000;
+    }
+
+    float controlSignal = (float)(Kp * error + Ki * integralerror);
+
+    // Convert float to int for printing
+    if (controlSignal < 0) {
+        setMotorDirection(0);  // Reverse direction
+        controlSignal = -controlSignal;
+    } else {
+        setMotorDirection(1);  // Forward direction
+    }
+
+    if (controlSignal > 100) {
+        controlSignal = 100;
+    }
+
+    setMotorDutyCycle((uint32_t)controlSignal);
+    return controlSignal;
 }
