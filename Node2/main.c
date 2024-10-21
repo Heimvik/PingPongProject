@@ -10,6 +10,7 @@
 #include "drivers/servo.h"
 #include "drivers/pwm.h"
 #include "drivers/adc.h"
+#include "drivers/solenoid.h"
 
 
 #define DEBUG_INTERRUPT 0
@@ -119,9 +120,9 @@ int main()
     struct slideOfJoy_t joyPos;
     //testMotor();
 	//initAdc();
-	initPwm();
-	initMotor();
-
+	//initPwm();
+	//initMotor();
+	TestMotorPosition();
     while (1)
     {
         //*
@@ -132,7 +133,8 @@ int main()
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
         //printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
         //*/
-
+		TestSolenoid();
+		time_spinFor(1000000);
         //setServoPosFromUint8(joyPos.sliderRight);
         setServoPosFromInt8(joyPos.yJoy);
 		setMotorDutyCycle((joyPos.joyDirection == 2 | joyPos.joyDirection == 3) ? 50 : 0);

@@ -1,6 +1,6 @@
 #include "pwm.h"
 
-__attribute__((constructor)) void initPwm()
+void initPwm()
 {
     // Enable the peripheral clock to the PMC
     //PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (ID_PWM << PMC_PCR_PID_Pos);

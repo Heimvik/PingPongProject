@@ -3,6 +3,8 @@
 #include "time.h"
 #include "pwm.h"
 void initEncoder();
+void initEncoder2();
+
 
 uint32_t readEncoder();
 
