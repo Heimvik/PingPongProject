@@ -5,3 +5,5 @@
 #include "drivers/gameLogic.h"
 
 void TestPwm();
+
+void TestGoalCounter();
