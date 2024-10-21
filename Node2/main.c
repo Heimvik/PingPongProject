@@ -114,20 +114,28 @@ int main()
     //TestAdc();
 
     //TestPwm();
-	TestGoalCounter();
+	//TestGoalCounter();
+	//TestMotorPosition();
     struct slideOfJoy_t joyPos;
+    //testMotor();
+	//initAdc();
+	initPwm();
+	initMotor();
 
     while (1)
     {
         //*
         joyPos.xJoy = 0.3 * joyPos.xJoy + 0.7 * (message.data[0] - 128);
-        joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * message.data[1] - 128;
+        joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * (message.data[1] - 128);
+		joyPos.joyDirection = message.data[2];
         joyPos.sliderLeft = 0.3 * joyPos.sliderLeft + 0.7 * message.data[3];
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
-        printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
+        //printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
         //*/
 
         //setServoPosFromUint8(joyPos.sliderRight);
-        setServoPosFromInt8(joyPos.xJoy);
+        setServoPosFromInt8(joyPos.yJoy);
+		setMotorDutyCycle((joyPos.joyDirection == 2 | joyPos.joyDirection == 3) ? 50 : 0);
+		setMotorDirection(joyPos.xJoy < 0);
     }
 }
