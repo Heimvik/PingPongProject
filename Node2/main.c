@@ -8,6 +8,8 @@
 #include "test.h"
 #include "drivers/userInput.h"
 #include "drivers/servo.h"
+#include "drivers/pwm.h"
+#include "drivers/adc.h"
 
 
 #define DEBUG_INTERRUPT 0
@@ -108,6 +110,9 @@ int main()
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
     
+
+    TestAdc();
+
     TestPwm();
     struct slideOfJoy_t joyPos;
 
