@@ -12,7 +12,7 @@ void InitSolenoid(){
 void ActivateSolenoid(){
     printf("Activating solenoid\n\r");
     REG_PIOC_SODR = PIO_SODR_P9;
-    time_spinFor(100000000);
+    time_spinFor(10000000);
     REG_PIOC_CODR = PIO_CODR_P9;
     printf("Deactivating solenoid\n\r");
 

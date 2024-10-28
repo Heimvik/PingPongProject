@@ -21,4 +21,4 @@ typedef struct {
 Menu_t initMenu(char* name,uint8_t numItems);
 MenuPage_t initMenuPage(char* name);
 
-void menuSelect();
+uint8_t menuSelect();

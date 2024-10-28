@@ -16,6 +16,7 @@
 
 #define DEBUG_INTERRUPT 0
 CAN_MESSAGE message;
+uint8_t start=0;
 
 /**
  * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
@@ -28,6 +29,7 @@ void CAN0_Handler( void )
 {
 	if(DEBUG_INTERRUPT)printf("CAN0 interrupt\n\r");
 	char can_sr = CAN0->CAN_SR; 
+    start=1;
 	
 	//RX interrupt
 	if(can_sr & (CAN_SR_MB1 | CAN_SR_MB2) )//Only mailbox 1 and 2 specified for receiving
@@ -111,9 +113,7 @@ int main()
     uint32_t error = 0;
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
-	initEncoder();
 
-    TestSolenoid();
 	initAdc();
 	initPwm();
 	initMotor();
@@ -123,7 +123,10 @@ int main()
     uint64_t time_last_frame;
     uint16_t primed = 0;
     uint16_t goals;
-
+    while (!start){
+        printf("Waiting for message\n\r");
+        time_spinFor(1000000);
+    }
     while (1)
     {
         time_last_frame = time_now();
@@ -136,7 +139,7 @@ int main()
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
 
         // Movement
-		double wantedPosition = ((double)joyPos.sliderLeft) * 100 / 256;
+		double wantedPosition = (double)(256-joyPos.sliderLeft) * 100 / 256;
 		setReferencePosition(wantedPosition);
         setServoPosFromInt8(joyPos.xJoy);
 

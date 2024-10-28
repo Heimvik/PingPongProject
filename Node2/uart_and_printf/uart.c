@@ -12,8 +12,96 @@
 #include "sam.h"
 #include "uart.h"
 
+#define STX 0x02
+#define ETX 0x03
+
+// State machine states
+typedef enum {
+    WAIT_FOR_STX,
+    READ_LEN_MSB,
+    READ_LEN_LSB,
+    READ_PAYLOAD,
+    WAIT_FOR_ETX
+} uart_state_t;
+
+uart_state_t uart_state = WAIT_FOR_STX;
+uint16_t payload_length = 0;
+uint16_t payload_index = 0;
+uint8_t payload[256]; // Adjust size as needed
 //Ringbuffer for receiving multiple characters
 uart_ringbuffer rx_buffer;
+
+void handle_packet(uint8_t *payload, uint16_t length)
+{
+    // Process the payload here
+    printf("Received valid packet with length: %d\n\r", length);
+    // Example: print payload data
+    for (uint16_t i = 0; i < length; i++) {
+        printf("Payload[%d]: 0x%02X\n\r", i, payload[i]);
+    }
+}
+
+
+void process_byte(uint8_t byte)
+{
+    switch (uart_state) {
+        case WAIT_FOR_STX:
+            if (byte == STX) {
+                uart_state = READ_LEN_MSB;
+                payload_index = 0;
+                payload_length = 0;
+            }
+            break;
+        
+        case READ_LEN_MSB:
+            payload_length = byte << 8; // Store MSB of the length
+            uart_state = READ_LEN_LSB;
+            break;
+        
+        case READ_LEN_LSB:
+            payload_length |= byte;     // Store LSB of the length
+            if (payload_length > sizeof(payload)) {
+                // Invalid length, reset state
+                uart_state = WAIT_FOR_STX;
+                printf("ERR: Payload length too large\n\r");
+            } else {
+                uart_state = READ_PAYLOAD;
+            }
+            break;
+        
+        case READ_PAYLOAD:
+            payload[payload_index++] = byte;
+            if (payload_index >= payload_length) {
+                uart_state = WAIT_FOR_ETX;
+            }
+            break;
+        
+        case WAIT_FOR_ETX:
+            if (byte == ETX) {
+                // Packet is valid, process the payload
+                handle_packet(payload, payload_length);
+            } else {
+                // Packet is invalid, reset state
+                printf("ERR: Invalid packet format\n\r");
+            }
+            uart_state = WAIT_FOR_STX;
+            break;
+        
+        default:
+            // Should never reach here, reset state machine
+            uart_state = WAIT_FOR_STX;
+            break;
+    }
+}
+
+/**
+ * \brief Handle a valid packet payload.
+ *
+ * \param payload The received payload data.
+ * \param length The length of the payload.
+ *
+ * \retval void.
+ */
 
 
 /**
@@ -133,14 +221,16 @@ void UART_Handler(void)
 	//Check if message is ready to be received
 	if(status & UART_SR_RXRDY)
 	{
+		uint8_t received_byte = UART->UART_RHR;
 		//Check if receive ring buffer is full and 
+		process_byte(received_byte);
 		if((rx_buffer.tail + 1) % UART_RINGBUFFER_SIZE == rx_buffer.head)
 		{
 			printf("ERR: UART RX buffer is full\n\r");
 			rx_buffer.data[rx_buffer.tail] = UART->UART_RHR; //Throw away message
 			return;
 		}
-		rx_buffer.data[rx_buffer.tail] = UART->UART_RHR;
+		rx_buffer.data[rx_buffer.tail] = received_byte;
 		rx_buffer.tail = (rx_buffer.tail + 1) % UART_RINGBUFFER_SIZE;
 	}	
 }
