@@ -132,6 +132,22 @@ int main()
         joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * (message.data[1] - 128);
 		joyPos.joyDirection = message.data[2];
         joyPos.sliderLeft = 0.3 * joyPos.sliderLeft + 0.7 * message.data[3];
+        // MOTOR GO BZZ
+        joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
+        //printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
+        //*/
+		double wantedPosition = ((double)joyPos.yJoy + 128)* 100 / 256;
+		setReferencePosition(wantedPosition);
+		printf("wantedpos and pos: %d %d\n\r",(uint32_t) wantedPosition, (uint32_t)readEncoder());
+		time_spinFor(100000);
+	        //setServoPosFromUint8(joyPos.sliderRight);
+		/*
+        setServoPosFromInt8(joyPos.yJoy);
+		setMotorDutyCycle((joyPos.joyDirection == 2 | joyPos.joyDirection == 3) ? 50 : 0);
+		setMotorDirection(joyPos.xJoy < 0);
+		*/
+
+      // GAME LOGIC
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4]
 
         // Movement
