@@ -70,3 +70,12 @@ void menuPrint(MenuPage_t menuPage, uint8_t menuIndex){
 
     OledWriteOutFb();
 }
+
+
+void displayGoals(uint8_t goals){
+    OledReset();
+    char goalString[16];
+    sprintf(goalString, "Goals: %d", goals);
+    OledPrintLn(0, goalString);
+    OledWriteOutFb();
+}

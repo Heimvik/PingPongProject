@@ -46,15 +46,17 @@ struct canDataFrame_t CanReceive()
     uint8_t canintf = CanControllerRead(MCP_CANINTF);
     struct canDataFrame_t dataFrame;
     uint8_t receiveBaseAddress;
-    
+    /*
     if (canintf & (0xE0))
     {
         printf("Error: Received bad can interrupt %x\n", canintf);
         CanControllerWrite(MCP_CANINTF, 0x00);
-        return;
+        receiveBaseAddress = MCP_RXB1CTRL;
+
     }
+    */
     
-    else if (canintf & MCP_RX0IF)
+    if (canintf & MCP_RX0IF)
     {
         receiveBaseAddress = MCP_RXB0CTRL;
         CanControllerBitModify(MCP_CANINTF, 0x00, 0x01);

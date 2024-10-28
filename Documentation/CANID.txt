@@ -8,3 +8,8 @@ ID : 0
     DATA2 : Joystick direction (joyDirection_t enum)
     DATA3 : Left slider position
     DATA4 : Right slider position
+
+ID : 2
+    NAME : "Goalcount"
+    DATA0 : Goals lower
+    DATA1 : Goals upper

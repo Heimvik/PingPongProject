@@ -8,6 +8,7 @@
 #include "drivers/spi.h"
 #include "drivers/cancontroller.h"
 #include "drivers/can.h"
+#include "drivers/oled.h"
 
 
 
@@ -34,6 +35,16 @@ int main(void)
     printf("Menu selected\n");
     while(1)
     {
+        if (yesWeCanFlag)
+        {
+            yesWeCanFlag = 0;
+            struct canDataFrame_t dataFrame = CanReceive();
+            if (dataFrame.id == 0x02)
+            {
+                uint8_t goals=dataFrame.data[0];
+                displayGoals(goals);
+            }
+        }
         joystick = ReadADC();
         CANSendJoystick(&joystick);
         _delay_ms(50);

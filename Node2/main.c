@@ -153,12 +153,19 @@ int main()
             primed = 0;
             ActivateSolenoid();
         }
+        printf("goals: %d\r", goals);
+        struct can_message_t goalsMessage;
+        goalsMessage.id = 0x02;
+        goalsMessage.data_length = 2;
+        goals = checkAndReturnGoals();
+        goalsMessage.data[0] = goals & 0xFF;
+        goalsMessage.data[1] = goals >> 8;
+        can_send(&goalsMessage, 0);
+
 
         while (time_now() < time_last_frame + 16*1000)
         {
-            // Score printout while waiting
-            goals = checkAndReturnGoals();
-            printf("Goals: %d\r", goals);
+
         }
     }
 }
