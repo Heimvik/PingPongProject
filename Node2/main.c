@@ -111,7 +111,9 @@ int main()
     uint32_t error = 0;
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
-    
+	initEncoder();
+
+    TestSolenoid();
 	initAdc();
 	initPwm();
 	initMotor();
