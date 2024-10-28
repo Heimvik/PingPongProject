@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
+        "*.j2": "django-html",
         "io.h": "c",
         "iom162.h": "c",
         "iom32hvbrevb.h": "c",
@@ -22,6 +23,8 @@
         "oledmenu.h": "c",
         "spi.h": "c",
         "cancontroller.h": "c",
-        "sam3x8e.h": "c"
+        "sam3x8e.h": "c",
+        "encoder.h": "c",
+        "motor.h": "c"
     }
 }

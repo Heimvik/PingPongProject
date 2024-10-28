@@ -10,6 +10,8 @@
 #include "drivers/servo.h"
 #include "drivers/pwm.h"
 #include "drivers/adc.h"
+#include "drivers/solenoid.h"
+#include "drivers/motor.h"
 
 
 #define DEBUG_INTERRUPT 0
@@ -110,24 +112,49 @@ int main()
     
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
     
-
-    //TestAdc();
-
-    //TestPwm();
-	TestGoalCounter();
+	initAdc();
+	initPwm();
+	initMotor();
+	initEncoder();
+    InitSolenoid();
     struct slideOfJoy_t joyPos;
+    uint64_t time_last_frame;
+    uint16_t primed = 0;
+    uint16_t goals;
 
     while (1)
     {
         //*
+        time_last_frame = time_now();
+		
+        // Grab inputs
         joyPos.xJoy = 0.3 * joyPos.xJoy + 0.7 * (message.data[0] - 128);
-        joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * message.data[1] - 128;
+        joyPos.yJoy = 0.3 * joyPos.yJoy + 0.7 * (message.data[1] - 128);
+		joyPos.joyDirection = message.data[2];
         joyPos.sliderLeft = 0.3 * joyPos.sliderLeft + 0.7 * message.data[3];
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
-        printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
-        //*/
 
-        //setServoPosFromUint8(joyPos.sliderRight);
+        // Movement
+		double wantedPosition = ((double)joyPos.sliderLeft) * 100 / 256;
+		setReferencePosition(wantedPosition);
         setServoPosFromInt8(joyPos.xJoy);
+
+        // Shooting
+        if (joyPos.sliderRight < 100)
+        {
+            primed = 1;
+        }
+        if (primed == 1 && joyPos.sliderRight > 150)
+        {
+            primed = 0;
+            ActivateSolenoid();
+        }
+
+        while (time_now() < time_last_frame + 16*1000)
+        {
+            // Score printout while waiting
+            goals = checkAndReturnGoals();
+            printf("Goals: %d\r", goals);
+        }
     }
 }
