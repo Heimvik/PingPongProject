@@ -135,7 +135,7 @@ int main()
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
 
         // Movement
-		double wantedPosition = ((double)joyPos.yJoy + 128)* 100 / 256;
+		double wantedPosition = ((double)joyPos.sliderLeft) * 100 / 256;
 		setReferencePosition(wantedPosition);
         setServoPosFromInt8(joyPos.xJoy);
 
