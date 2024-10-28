@@ -1,7 +1,8 @@
 #include "adc.h"
 
 
-void initAdc(){
+void initAdc()
+{
     // Turn off write protection
     REG_PIOA_WPMR = 0x50494F00;
     REG_ADC_WPMR = 0x41444300;
@@ -25,7 +26,9 @@ void initAdc(){
     REG_PIOA_WPMR = 0x50494F01;
     REG_ADC_WPMR = 0x41444301;
 }
-uint16_t readAdc(){
+
+uint16_t readAdc()
+{
     //Write the ADC_CR with START = 1
     REG_ADC_CR = ADC_CR_START;
     //Wait for ADC_SR DRDY bit is set

@@ -16,3 +16,12 @@ void TestAdc(){
         }
     }
 }
+
+void TestGoalCounter()
+{
+    initAdc();
+    while(1)
+    {
+        printf("%d\n\r", checkAndReturnGoals());
+    }
+}

@@ -111,9 +111,10 @@ int main()
     //NVIC->ICER[0] = 0xFFFFFFFF; // Disable all interrupts
     
 
-    TestAdc();
+    //TestAdc();
 
-    TestPwm();
+    //TestPwm();
+	TestGoalCounter();
     struct slideOfJoy_t joyPos;
 
     while (1)
