@@ -107,11 +107,10 @@ double integralerror = 0;
 double wantedPosition = 0;
 double prevError = 0;
 
-double Kp = 1;
-double Ki = 1.5;
-double Kd = 0.01;
+double Kp = 0.5;
+double Ki = 0.3;
+double Kd = 0.1;
 double dt=0.05;
-
 
 void setReferencePosition(int32_t position){
     wantedPosition = position;
@@ -141,6 +140,7 @@ void PIcontroller() {
     if (controlSignal > 150) {
         controlSignal = 150;
     }
+    prevError=error;
 
     setMotorDutyCycle((uint32_t)controlSignal);
 
