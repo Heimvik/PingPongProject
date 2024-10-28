@@ -3,13 +3,15 @@
 #include "time.h"
 #include "pwm.h"
 void initEncoder();
+#define ENCODER_MAX_VALUE 2833
 
-
-uint32_t readEncoder();
 
 void initMotor();
 
 void setMotorDirection(uint8_t dir);
 
-float PIcontroller(int32_t wantedPosition, uint8_t T);
+void PIcontroller();
 
+void setReferencePosition(int32_t position);
+
+double readEncoder();

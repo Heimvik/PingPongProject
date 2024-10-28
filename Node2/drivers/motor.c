@@ -1,5 +1,6 @@
 #include "motor.h"
 
+
 void initEncoder(){
     initMotor();
     setMotorDirection(0);
@@ -33,12 +34,18 @@ void initEncoder(){
     REG_TC2_CMR0 &= ~(TC_CMR_WAVE);
 
     printf("TC2 status: %x\n\r", REG_TC2_SR0);  
-    //initTimerInterrupt();
+    initTimerInterrupt();
 
 }
 
-uint32_t readEncoder(){
-    return (uint32_t)REG_TC2_CV0;
+double readEncoder(){
+    uint32_t encoderValue = REG_TC2_CV0;
+    if (encoderValue > ENCODER_MAX_VALUE*2){
+        encoderValue = 0;
+    }
+    double percentage = ((double)encoderValue * 100) / ENCODER_MAX_VALUE;
+
+    return percentage;
 }
 
 
@@ -58,28 +65,30 @@ void setMotorDirection(uint8_t dir){
     }
 }
 
+volatile uint32_t a;
 
-
-void TC1_Handler(void){
-    while (1)
-    {
-        printf("Interrupt\n\r");
-    }
-    
+void TC3_Handler(void){
+    //PIcontroller();
+    PIcontroller();
+    NVIC_ClearPendingIRQ(TC3_IRQn);
+    a=REG_TC1_SR0;
 }
+
 
 void initTimerInterrupt(){
     __enable_irq();
+    NVIC_ClearPendingIRQ(TC3_IRQn);
+
+    NVIC_EnableIRQ(TC3_IRQn);
+    REG_TC1_IER0 = 0x10;
 
     printf("Init timer interrupt\n\r");
     REG_PMC_PCER0 |= PMC_PCER0_PID30 | PMC_PCER0_PID31;
     REG_PMC_PCER1 |= PMC_PCER1_PID32; 
     
     REG_TC1_CMR0= TC_CMR_TCCLKS_TIMER_CLOCK1 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
-    REG_TC1_RC0 = 1000000000;
+    REG_TC1_RC0 = 2100000;
 
-    REG_TC1_IER0 = 0x11;
-    NVIC_EnableIRQ(TC1_IRQn);
 
 
 
@@ -87,12 +96,6 @@ void initTimerInterrupt(){
 
     printf("status: %x\n\r", REG_TC1_SR0);
     printf("interrupt status %x\n\r", REG_TC1_IMR0);
-    while (1)
-    {
-        printf("counter value: %d\n\r", REG_TC1_CV0);
-    }
-    
-
 
 }
 
@@ -100,29 +103,34 @@ void initTimerInterrupt(){
 
 
 
-int32_t integralerror = 0;
-int32_t wantedPosition = 0;
+double integralerror = 0;
+double wantedPosition = 0;
+double prevError = 0;
 
-float Kp = 0.02;
-float Ki = 0.002;
+double Kp = 1;
+double Ki = 1.5;
+double Kd = 0.01;
+double dt=0.05;
 
-float PIcontroller(int32_t wantedPosition, uint8_t T) {
-    uint32_t position = readEncoder();
-    int32_t error = wantedPosition - (int32_t)position;
 
-    integralerror += error;
-    printf("Error: %d\n\r", error);
-    printf("Integral error: %d\n\r", integralerror);
+void setReferencePosition(int32_t position){
+    wantedPosition = position;
+}
 
-    if (integralerror > 6000) {
-        integralerror = 6000;
-    } else if (integralerror < -6000) {
-        integralerror = -6000;
-    }
+void PIcontroller() {
+    double position = readEncoder();
+    double error = (double)wantedPosition - (double)position;
 
-    float controlSignal = (float)(Kp * error + Ki * integralerror);
+    integralerror = integralerror + error*dt;
 
-    // Convert float to int for printing
+
+    double derivative = -(error - prevError)/dt;
+
+
+    double controlSignal = (double)(Kp * error + Ki * integralerror+Kd*derivative);
+
+
+    // Convert double to int for printing
     if (controlSignal < 0) {
         setMotorDirection(0);  // Reverse direction
         controlSignal = -controlSignal;
@@ -130,10 +138,10 @@ float PIcontroller(int32_t wantedPosition, uint8_t T) {
         setMotorDirection(1);  // Forward direction
     }
 
-    if (controlSignal > 100) {
-        controlSignal = 100;
+    if (controlSignal > 150) {
+        controlSignal = 150;
     }
 
     setMotorDutyCycle((uint32_t)controlSignal);
-    return controlSignal;
+
 }

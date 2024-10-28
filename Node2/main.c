@@ -137,11 +137,11 @@ int main()
         joyPos.sliderRight = 0.3 * joyPos.sliderRight + 0.7 * message.data[4];
         //printf("%d %d %d %d\r\n", joyPos.xJoy, joyPos.yJoy, joyPos.sliderLeft, joyPos.sliderRight);
         //*/
-		int32_t wantedPosition = ((int32_t)joyPos.yJoy + 128) * 2833 / 256;
-
-		PIcontroller(wantedPosition, 1);
-		time_spinFor(10000000);
-        //setServoPosFromUint8(joyPos.sliderRight);
+		double wantedPosition = ((double)joyPos.yJoy + 128)* 100 / 256;
+		setReferencePosition(wantedPosition);
+		printf("wantedpos and pos: %d %d\n\r",(uint32_t) wantedPosition, (uint32_t)readEncoder());
+		time_spinFor(100000);
+	        //setServoPosFromUint8(joyPos.sliderRight);
 		/*
         setServoPosFromInt8(joyPos.yJoy);
 		setMotorDutyCycle((joyPos.joyDirection == 2 | joyPos.joyDirection == 3) ? 50 : 0);
