@@ -25,3 +25,31 @@ void TestGoalCounter()
         printf("%d\n\r", checkAndReturnGoals());
     }
 }
+
+
+void TestMotorPosition()
+{
+    initEncoder();
+    while(1)
+    {
+        printf("Position: %d\n\r",readEncoder());
+    }
+}
+
+void TestSolenoid()
+{
+    InitSolenoid();
+    while(1){
+        ActivateSolenoid();
+        time_spinFor(100000000);
+    }
+}
+
+void testPI(){
+    initEncoder();
+    //wantedPosition = 1000;
+    while (1)
+    {
+    }
+    
+}

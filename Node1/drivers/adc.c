@@ -59,7 +59,7 @@ struct slideOfJoy_t ReadADC()
     //joystick direction
     if (abs(xJoy) > abs(yJoy))
     {
-        if (abs(xJoy) < 10)
+        if (abs(xJoy) < 100)
         {
             slideOfJoy.joyDirection = NEUTRAL;
         }

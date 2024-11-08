@@ -12,18 +12,16 @@ Menu_t initMenu(char* name, uint8_t numItems){
 
 
 
-void menuSelect() {
+uint8_t menuSelect() {
     MenuItem_t mainMenuItems[] = {
         {"Play", NULL},
-        {"Settings", NULL},
-        {"Highscore", NULL},
         {"Exit", NULL},
         {"PLZ GODKJENN", NULL}
     };
 
     MenuPage_t mainMenu = {
         "Main menu",
-        5,
+        3,
         mainMenuItems
     };
 
@@ -36,8 +34,8 @@ void menuSelect() {
         
         joyDirection_t dir = ReadADC().joyDirection;
         uint8_t sliderLeft = ReadADC().sliderLeft;
-        if (sliderLeft > 200) {
-            printf("Selected item: %s\n", mainMenu.items[menuIndex].text);
+        if (dir == RIGHT) {
+            return 1;
         }
         if (dir == lastDirection) {
             debounceCounter++;
@@ -46,9 +44,9 @@ void menuSelect() {
         }
 
         if (debounceCounter >= debounceThreshold) {
-            if (dir == UP) {
+            if (dir == DOWN) {
                 menuIndex = (menuIndex + 1) % mainMenu.numItems;
-            } else if (dir == DOWN) {
+            } else if (dir == UP) {
                 menuIndex = (menuIndex - 1 + 3) % mainMenu.numItems; // Ensure menuIndex stays positive
             }
             debounceCounter = 0; // Reset the counter after registering the input
@@ -70,5 +68,14 @@ void menuPrint(MenuPage_t menuPage, uint8_t menuIndex){
         }
     }
 
+    OledWriteOutFb();
+}
+
+
+void displayGoals(uint8_t goals){
+    OledReset();
+    char goalString[16];
+    sprintf(goalString, "Goals: %d", goals);
+    OledPrintLn(0, goalString);
     OledWriteOutFb();
 }
